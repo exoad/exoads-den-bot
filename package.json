@@ -1,0 +1,19 @@
+{
+  "name": "exoadden",
+  "version": "1.0.0",
+  "description": "exoad's den official discord bot",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "discord-bot",
+    "bot"
+  ],
+  "author": "exoad (Jack Meng)",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "discord.js": "^14.8.0",
+    "fs": "^0.0.1-security"
+  }
+}
