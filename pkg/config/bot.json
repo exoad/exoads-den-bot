@@ -1,3 +1,21 @@
 {
-  "prefix": "!!"
+  "prefix": "!!",
+  "local": {
+    "server-port": 6900
+  },
+  "commands": {
+    "prefixing": [
+      "aliases",
+      "commands",
+      "description",
+      "category"
+    ],
+    "categories": [
+      "Fun",
+      "Social",
+      "Utility",
+      "Gestures"
+    ]
+  }
+
 }
