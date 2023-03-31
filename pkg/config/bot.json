@@ -1,5 +1,6 @@
 {
   "prefix": "!!",
+  "exoad-id": "862856706323906581",
   "local": {
     "server-port": 6900
   },
@@ -14,8 +15,11 @@
       "Fun",
       "Social",
       "Utility",
-      "Gestures"
+      "Gestures",
+      "Advisory"
     ]
-  }
+  },
+  "use_globalCmdTimeout": true,
+  "globalCmdTimeoutTime": 1750
 
 }
