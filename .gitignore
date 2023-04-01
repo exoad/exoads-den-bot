@@ -77,6 +77,9 @@ jspm_packages/
 # Output of 'npm pack'
 *.tgz
 
+# workspace settings that are local to me
+.vscode/settings.json
+
 # Yarn Integrity file
 .yarn-integrity
 
