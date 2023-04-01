@@ -28,11 +28,11 @@ const bot = new Client({
 
 console.log(_.black.bgRedBright.bold.italic("Starting up the bot..."));
 
-app.get("/", (r, res) => res.send("The bot is online! :DD"));
+app.get("/", (_r, res) => res.send("The bot is online! :DD"));
 app.listen(port, () => console.log("Alive on port: " + port));
 
 config.commands.prefixing.forEach((x) => (bot[x] = new Collection()));
-["commands", "events"].forEach((x) => require("./" + x)(bot));
+["commands", "events"].forEach((x) => require("./handlers/" + x + ".js")(bot));
 
 bot.setMaxListeners(15);
 bot.once("ready", () => {

@@ -3,17 +3,19 @@
 // license that can be found in the LICENSE file.
 
 const { readdirSync } = require("fs");
-const config = require("../../config/bot.json");
+const config = require("../../../config/bot.json");
 const _ = require("ansi-colors");
 let count = 0;
 
-module.exports = (bot) => {
-  const load = (dirs) => {
+module.exports = (
+  /** @type {{ on: (arg0: string, arg1: any) => void; }} */ bot
+) => {
+  const load = (/** @type {string} */ dirs) => {
     const events = readdirSync("./pkg/js/src/events/" + dirs + "/").filter(
-      (d) => d.endsWith(".js")
+      (d) => d.endsWith(".js") || d.endsWith(".jsm")
     );
     for (let f of events) {
-      const evt = require("./events/" + dirs + "/" + f);
+      const evt = require("../events/" + dirs + "/" + f);
       let name = f.split(".")[0];
       bot.on(name, evt.bind(null, bot));
       console.log(

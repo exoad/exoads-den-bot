@@ -19,6 +19,7 @@
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
     "latenz": "^0.2.4",
-    "moment": "^2.29.4"
+    "moment": "^2.29.4",
+    "querystring": "^0.2.1"
   }
 }
