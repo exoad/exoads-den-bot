@@ -10,7 +10,7 @@ module.exports = {
     category: "Fun",
     description: "See what the 8ball says!",
     usage: "Any string will be taken",
-    aliases: [``],
+    aliases: [],
   },
   run: async (
     /** @type {{ commands: any[]; }} */ bot,

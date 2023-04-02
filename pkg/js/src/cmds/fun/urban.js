@@ -9,7 +9,7 @@ module.exports = {
     category: "Fun",
     description: "Urban Dictionary search a word",
     usage: "Provide a viable word as the first argument",
-    aliases: [``],
+    aliases: [],
   },
   run: async (
     // @ts-ignore

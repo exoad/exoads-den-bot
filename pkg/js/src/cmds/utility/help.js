@@ -41,7 +41,7 @@ module.exports = {
         t.forEach((re, r) => {
           ar.push({
             name: "**" + r + "**",
-            value: "```\n" + re + "```",
+            value: !re ? "" : "```\n" + re + "```",
             inline: true,
           });
         });
