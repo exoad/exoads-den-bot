@@ -1,5 +1,5 @@
 // Copyright 2023 Jack Meng. All rights reserved.
-// Use of this source code is governed by a BSD-style
+// Use of this source code is governed by a GPL-style
 // license that can be found in the LICENSE file.
 
 const { stringify } = require("querystring");
@@ -22,14 +22,13 @@ module.exports = async (
   )
     return;
   else {
-    msg.reply("All commands: " + stringify(bot.commands.keys()));
-    const args = msg.content.slice(config.prefix).trim().split(/ +/g);
+    // @ts-ignore
+    // this fucking piece of code made me mald for 1 hour trying to find why the bot didnt react to messages and commands
+    const args = msg.content.slice(config.prefix.length).trim().split(/ +/g);
     // @ts-ignore
     const cmd = args.shift().toLowerCase();
     let cmdFile =
       bot.commands.get(cmd) || bot.commands.get(bot.aliases.get(cmd));
-    msg.reply("Trying to run " + cmdFile + " for " + cmd + " with " + args);
-
     if (cmdFile) {
       cmdFile.run(bot, msg, args, config);
       if (config.use_globalCmdTimeout && msg.author.id != config["exoad-id"]) {

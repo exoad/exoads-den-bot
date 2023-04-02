@@ -1,22 +1,13 @@
 {
-  "prefix": "%",
+  "prefix": "!",
   "exoad-id": "862856706323906581",
   "local": {
-    "server-port": 6900
+    "server-port": 6901
   },
   "commands": {
-    "prefixing": [
-      "aliases",
-      "commands",
-      "description",
-      "category"
-    ],
     "categories": [
-      "Fun",
-      "Social",
       "Utility",
-      "Gestures",
-      "Advisory"
+      "Fun"
     ]
   },
   "use_globalCmdTimeout": true,

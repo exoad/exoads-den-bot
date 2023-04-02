@@ -1,5 +1,5 @@
 // Copyright 2023 Jack Meng. All rights reserved.
-// Use of this source code is governed by a BSD-style
+// Use of this source code is governed by a GPL-style
 // license that can be found in the LICENSE file.
 
 const {
@@ -31,10 +31,15 @@ console.log(_.black.bgRedBright.bold.italic("Starting up the bot..."));
 app.get("/", (_r, res) => res.send("The bot is online! :DD"));
 app.listen(port, () => console.log("Alive on port: " + port));
 
-config.commands.prefixing.forEach((x) => (bot[x] = new Collection()));
-["commands", "events"].forEach((x) => require("./handlers/" + x + ".js")(bot));
+["aliases", "commands", "description", "category"].forEach(
+  (x) => (bot[x] = new Map())
+);
+["cmd", "events"].forEach((x) => {
+  console.log(_.bold.cyan("Requiring a handler: ") + _.underline(x));
+  require("./handlers/" + x + ".js")(bot);
+});
 
-bot.setMaxListeners(15);
+bot.setMaxListeners(25);
 bot.once("ready", () => {
   console.log(_.bold.green("API is ready"));
   console.log(
@@ -53,6 +58,7 @@ bot.on("messageCreate", async (msg) => {
     msg.channel.send(
       `My prefix is: \`${config.prefix}\`\nUse \`${config.prefix}help\` to get commands to use`
     );
+
 });
 
 bot.login(internal["BOT-TOKEN"]);
