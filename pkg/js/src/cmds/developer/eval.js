@@ -45,6 +45,7 @@ module.exports = {
         });
       msg.channel.send({ embeds: [embed] });
     }
+    
 
     function clean(text) {
       if (typeof text === "string")

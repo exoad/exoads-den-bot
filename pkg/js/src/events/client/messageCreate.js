@@ -31,6 +31,11 @@ module.exports = async (
     let cmdFile =
       bot.commands.get(cmd) || bot.commands.get(bot.aliases.get(cmd));
     if (cmdFile) {
+      if (
+        cmdFile.config.category == "Developer" &&
+        msg.author.id != config["exoad-id"]
+      )
+        return;
       const bot_db = new Database("BOT_INTERNALS");
       cmdFile.run(bot, msg, args, config, bot_db);
       if (config.use_globalCmdTimeout && msg.author.id != config["exoad-id"]) {
