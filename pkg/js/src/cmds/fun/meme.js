@@ -2,6 +2,7 @@
 
 const { EmbedBuilder } = require("discord.js");
 const https = require("https");
+const fx = require("../../fx.js");
 const url = [
   "https://www.reddit.com/r/memes/hot/.json?limit=100",
   "https://www.reddit.com/r/dankmemes/hot/.json?limit=100",
@@ -18,7 +19,7 @@ module.exports = {
     /** @type {{ commands: any[]; }} */ bot,
     /** @type {{ channel: { send: (arg0: { embeds: EmbedBuilder[]; }) => void; }; }} */ msg
   ) => {
-    https.get(url[Math.floor(Math.random() * url.length)], (result) => {
+    https.get(fx.randomFromArr(url), (result) => {
       var body = "";
       result.on("data", (chunk) => {
         body += chunk;

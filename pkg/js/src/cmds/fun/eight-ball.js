@@ -16,7 +16,7 @@ module.exports = {
     /** @type {{ commands: any[]; }} */ bot,
     /** @type {{ channel: { send: (arg0: { embeds: EmbedBuilder[]; }) => void; }; }} */ msg,
     /** @type {any} */ args,
-    /** @type {any} */ config
+    /** @type {any} */ config, bot_db
   ) => {
     function doRandHT() {
       var rand = [

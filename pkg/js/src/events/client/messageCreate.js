@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 const { stringify } = require("querystring");
+const { Database } = require("secure-db");
 const config = require("../../../../config/bot.json");
 const talkedRecently_userIDS = new Set();
 
@@ -30,7 +31,8 @@ module.exports = async (
     let cmdFile =
       bot.commands.get(cmd) || bot.commands.get(bot.aliases.get(cmd));
     if (cmdFile) {
-      cmdFile.run(bot, msg, args, config);
+      const bot_db = new Database("BOT_INTERNALS");
+      cmdFile.run(bot, msg, args, config, bot_db);
       if (config.use_globalCmdTimeout && msg.author.id != config["exoad-id"]) {
         talkedRecently_userIDS.add(msg.author.id);
         setTimeout(

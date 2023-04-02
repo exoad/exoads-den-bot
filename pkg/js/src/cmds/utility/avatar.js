@@ -24,6 +24,13 @@ module.exports = {
           format: "png",
           dynamic: true,
         });
+    if (!avatar) {
+      msg.channel.send(
+        // @ts-ignore
+        "No avatar found. Probably default.\n||I am too lazy to fix this issue||"
+      );
+      return;
+    }
     if (msg.mentions.users.size > 0) {
       const embed = new EmbedBuilder()
         .setColor("Green")
