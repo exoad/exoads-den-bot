@@ -19,7 +19,7 @@ module.exports = {
   ) => {
     try {
       var code = args.join(" ");
-      if (code === "client.token") return;
+      if (code === "bot.token") return;
       var evaled = eval(code);
 
       if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
@@ -45,7 +45,7 @@ module.exports = {
         });
       msg.channel.send({ embeds: [embed] });
     }
-    
+
 
     function clean(text) {
       if (typeof text === "string")

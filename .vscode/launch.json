@@ -5,6 +5,20 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "java",
+      "name": "OwO",
+      "request": "launch",
+      "mainClass": "owo.OwO",
+      "projectName": "exoads-den-bot_eafbc42e"
+    },
+    {
+      "type": "java",
+      "name": "OwO",
+      "request": "launch",
+      "mainClass": "OwO",
+      "projectName": "exoads-den-bot_eafbc42e"
+    },
+    {
       "type": "pwa-node",
       "request": "launch",
       "name": "Launch Program",
