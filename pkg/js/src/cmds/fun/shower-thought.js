@@ -47,7 +47,7 @@ module.exports = {
         if (!allowed.length)
           m.channel.send(
             // @ts-ignore
-            "**Oops**, the post I tried to fetch was marked as NSFW. Please try again! Sorry."
+            "<:dumb:1104512469642256544> **Oops**, the post I tried to fetch was marked as NSFW. Please try again! Sorry."
           );
         const randomnumber = Math.floor(Math.random() * allowed.length);
         const embed = new EmbedBuilder()
