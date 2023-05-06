@@ -27,7 +27,7 @@ module.exports = {
     if (!avatar) {
       msg.channel.send(
         // @ts-ignore
-        "No avatar found. Probably default.\n||I am too lazy to fix this issue||"
+        "Oh?? I couldn't find the avatar for that user! Maybe they don't have it set?"
       );
       return;
     }

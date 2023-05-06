@@ -50,11 +50,11 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setTitle("Detailed Command Pool")
         .setDescription(
-          "This command can be used with an argument: `" +
+          "Use this command like: `" +
             config.prefix +
             "help [command]` to get information specific for that command. You can also use `" +
             config.prefix +
-            "cmdspew` to get a plain list of aliases and commands without detail."
+            "cmdspew` to get a plain list of aliases and commands without detail. :D"
         )
         .addFields(getIndividualCategories());
       // @ts-ignore
@@ -63,9 +63,9 @@ module.exports = {
       let fcmd = bot.commands.get(cmd);
       if (!fcmd) {
         msg.channel.send(
-          "**??**\nThe requested command: `" +
+          "**Oh??**\nYou wanted: `" +
             args[0] +
-            "` could not be found in the commands pool.\nYou may consult the Command Spew Pool using: `" +
+            "` but I could not find that in the commands pool.\nYou should consult the Command Spew Pool using: `" +
             config.prefix +
             "cmdspew` to get a list of avaliable commands!"
         );

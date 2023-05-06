@@ -8,12 +8,21 @@ const config = require("../../../../config/bot.json");
 const { getNotOks } = require("../../fx");
 const talkedRecently_userIDS = new Set();
 const botgen = require("../../fx_BotGeneric");
+const h = require("../../../../../ipkg/config/h.json");
 
 module.exports = async (
   /** @type {{ commands: { keys: () => import("querystring").ParsedUrlQueryInput | undefined; get: (arg0: any) => any; }; aliases: { get: (arg0: any) => any; }; }} */ bot,
   /** @type {{ author: { bot: any; id: string; }; channel: { type: string; }; content: { startsWith: (arg0: string) => any; slice: (arg0: string) => string; }; reply: (arg0: string) => void; }} */ msg
 ) => {
   try {
+    h.AUTO_REMOVE.forEach(x => {
+      // @ts-ignore
+      if (msg.content.toLowerCase().includes(x)) {
+        // @ts-ignore
+        msg.delete();
+      }
+    });
+
     if (msg.author.bot || msg.channel.type === "dm") return;
     else if (
       config.use_globalCmdTimeout &&
@@ -59,6 +68,8 @@ module.exports = async (
     }
   } catch (err) {
     // @ts-ignore
-    msg.channel.send("**oh no!**\nan internal error occured...\nquick start spam pinging exoad");
+    msg.channel.send(
+      "**oh no!**\nan internal error occured...\nquick start spam pinging exoad"
+    );
   }
 };

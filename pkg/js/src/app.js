@@ -56,7 +56,7 @@ bot.on("messageCreate", async (msg) => {
     msg.content == `<@!${bot.user.id}>`
   )
     msg.channel.send(
-      `My prefix is: \`${config.prefix}\`\nUse \`${config.prefix}help\` to get commands to use`
+      `hoi! my prefix is: \`${config.prefix}\`\nyou then can use \`${config.prefix}help\` to get more information on commands you can use!`
     );
 
 });

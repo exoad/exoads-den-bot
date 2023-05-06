@@ -1,4 +1,3 @@
-package owo;
 /*
 
 BSD 3-Clause License
