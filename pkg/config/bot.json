@@ -13,6 +13,6 @@
     ]
   },
   "use_globalCmdTimeout": true,
-  "globalCmdTimeoutTime": 1750
-
+  "globalCmdTimeoutTime": 1750,
+  "name": "daoxe"
 }

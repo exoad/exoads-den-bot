@@ -27,6 +27,7 @@
     "querystring": "^0.2.1",
     "secure-db": "^3.2.1",
     "superagent": "^8.0.9",
+    "systeminformation": "^5.17.12",
     "urban": "^0.3.4"
   }
 }
