@@ -67,7 +67,7 @@ module.exports = {
           value: "Interactions: " + botgen.interactions(),
           inline: true,
         }
-      );
+      ).setColor(config.colors.embed_gray);
     msg.channel.send({ embeds: [embed] });
   },
 };

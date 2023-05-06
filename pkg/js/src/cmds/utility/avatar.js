@@ -33,7 +33,7 @@ module.exports = {
     }
     if (msg.mentions.users.size > 0) {
       const embed = new EmbedBuilder()
-        .setColor("Green")
+        .setColor(config.colors.embed_gray)
         .setTitle(
           `:white_check_mark: ${
             msg.mentions.users.first().username
@@ -43,7 +43,7 @@ module.exports = {
       msg.channel.send({ embeds: [embed] });
     } else {
       const embed = new EmbedBuilder()
-        .setColor("Green")
+        .setColor(config.colors.embed_gray)
         .setTitle(
           `:white_check_mark: ${msg.author.username}\'s Profile Picture:`
         )

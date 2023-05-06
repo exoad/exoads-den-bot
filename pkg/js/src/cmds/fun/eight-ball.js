@@ -47,7 +47,7 @@ module.exports = {
     let user_prompt = msg.content.split(" ").slice(1);
     const embed = new EmbedBuilder()
       .setTitle(doRandHT())
-      .setColor("Random")
+      .setColor(config.colors.embed_gray)
       .setDescription(
         // @ts-ignore
         "**" + msg.author.username + " prompted:** " + user_prompt.join(" ")

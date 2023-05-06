@@ -51,7 +51,7 @@ module.exports = {
           );
         const randomnumber = Math.floor(Math.random() * allowed.length);
         const embed = new EmbedBuilder()
-          .setColor("Random")
+          .setColor(config.colors.embed_gray)
           .setTitle(allowed[randomnumber].data.title)
           .setDescription("Posted by: u/" + allowed[randomnumber].data.author)
           .setImage(allowed[randomnumber].data.url)

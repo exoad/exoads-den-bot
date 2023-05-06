@@ -32,7 +32,7 @@ module.exports = {
         .addFields({ name: "Bank", value: body.bank_name, inline: true })
         .addFields({ name: "Routing", value: body.routing_number, inline: true })
         .addFields({ name: "BIC (Swift)", value: body.swift_bic, inline: true })
-        .setColor("Random");
+        .setColor(config.colors.embed_gray);
 
       msg.channel.send({ embeds: [embed] });
     } else if (toChoice == "blood") {
@@ -44,7 +44,7 @@ module.exports = {
         .addFields({ name: "Type", value: body.type, inline: true })
         .addFields({ name: "RH Factor", value: body.rh_factor, inline: true })
         .addFields({ name: "Group", value: body.group, inline: true })
-        .setColor("Random");
+        .setColor(config.colors.embed_gray);
 
       msg.channel.send({ embeds: [embed] });
     } else if (toChoice == "credit") {
@@ -56,7 +56,7 @@ module.exports = {
         .addFields({ name: "Number", value: body.credit_card_number, inline: true })
         .addFields({ name: "Expiration", value: body.credit_card_expiry_date, inline: true })
         .addFields({ name: "Type", value: body.credit_card_type, inline: true })
-        .setColor("Random");
+        .setColor(config.colors.embed_gray);
 
       msg.channel.send({ embeds: [embed] });
     } else if (toChoice == "code") {
@@ -73,7 +73,7 @@ module.exports = {
         .addFields({ name: "IMEI", value: body.imei, inline: true })
         .addFields({ name: "ASIN", value: body.asin, inline: true })
         .addFields({ name: "SIN", value: body.sin, inline: true })
-        .setColor("Random");
+        .setColor(config.colors.embed_gray);
 
       msg.channel.send({ embeds: [embed] });
     } else if (toChoice == "coffee") {
@@ -87,7 +87,7 @@ module.exports = {
         .addFields({ name: "Variety Name", value: body.variety, inline: true })
         .addFields({ name: "Feel", value: body.notes, inline: true })
         .addFields({ name: "Intensifier", value: body.intensifier, inline: true })
-        .setColor("Random");
+        .setColor(config.colors.embed_gray);
 
       msg.channel.send({ embeds: [embed] });
     } else if (toChoice == "company") {
@@ -117,7 +117,7 @@ module.exports = {
           name: "Address + Latitude Longitude",
           value: `${body.full_address}\n**Latitude** ${body.latitude}\n**Longitude** ${body.longitude}`,inline: true
         })
-        .setColor("Random");
+        .setColor(config.colors.embed_gray);
 
       msg.channel.send({ embeds: [embed] });
     } else if (toChoice == "crypto") {
@@ -129,7 +129,7 @@ module.exports = {
         .addFields({ name: "MD5", value: body.md5, inline: true })
         .addFields({ name: "SHA1", value: body.sha1, inline: true })
         .addFields({ name: "SHA256", value: body.sha256, inline: true })
-        .setColor("Random");
+        .setColor(config.colors.embed_gray);
 
       msg.channel.send({ embeds: [embed] });
     } else if (toChoice == "computer") {
@@ -142,7 +142,7 @@ module.exports = {
         .addFields({ name: "Type", value: body.type, inline: true })
         .addFields({ name: "OS", value: body.os, inline: true })
         .addFields({ name: "Stack", value: body.stack, inline: true })
-        .setColor("Random");
+        .setColor(config.colors.embed_gray);
 
       msg.channel.send({ embeds: [embed] });
     } else if (toChoice == "color") {
@@ -167,7 +167,7 @@ module.exports = {
         .addFields({ name: "Build", value: body.build_number, inline: true })
         .addFields({ name: "Serial Number", value: body.serial_number, inline: true })
         .addFields({ name: "Version", value: body.version, inline: true })
-        .setColor("Random");
+        .setColor(config.colors.embed_gray);
 
       msg.channel.send({ embeds: [embed] });
     } else if (toChoice == "food") {
@@ -182,7 +182,7 @@ module.exports = {
           name: "Ingredients & Measurement",
           value: `${body.ingredient}\n${body.measurement}`, inline: true
         })
-        .setColor("Random");
+        .setColor(config.colors.embed_gray);
 
       msg.channel.send({ embeds: [embed] });
     } else if (toChoice == "name") {
@@ -192,7 +192,7 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setTitle("Random Name")
         .addFields({ name: "Name", value: body.name, inline: true })
-        .setColor("Random");
+        .setColor(config.colors.embed_gray);
 
       msg.channel.send({ embeds: [embed] });
     } else if (toChoice == "id") {
@@ -203,7 +203,7 @@ module.exports = {
         .setTitle("Random ID")
         .addFields({ name: "Valid SSN", value: body.valid_us_ssn, inline: true })
         .addFields({ name: "Invalid", value: body.invalid_us_ssn, inline: true })
-        .setColor("Random");
+        .setColor(config.colors.embed_gray);
 
       msg.channel.send({ embeds: [embed] });
     } else if (toChoice == "vehicle") {
@@ -225,7 +225,7 @@ module.exports = {
         .addFields({ name: "Kilometrage", value: body.kilometrage, inline: true })
         .addFields({ name: "License", value: body.license_plate, inline: true })
         .addFields({ name: "VIN", value: body.vin, inline: true })
-        .setColor("Random");
+        .setColor(config.colors.embed_gray);
 
       msg.channel.send({ embeds: [embed] });
     } else if (toChoice == "nation") {
@@ -239,7 +239,7 @@ module.exports = {
         .addFields({ name: "Capital", value: body.capital, inline: true })
         .addFields({ name: "National Sport", value: body.national_sport, inline: true })
         .addFields({ name: "Flag", value: body.flag, inline: true })
-        .setColor("Random");
+        .setColor(config.colors.embed_gray);
 
       msg.channel.send({ embeds: [embed] });
     } else if (toChoice == "number") {

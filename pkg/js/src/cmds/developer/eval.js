@@ -25,7 +25,7 @@ module.exports = {
       if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
 
       const embed = new EmbedBuilder()
-        .setColor(0x1fd66e)
+        .setColor(config.colors.embed_gray)
         .addFields({
           name: ":inbox_tray: Through: ",
           value: `\`\`\`${code}\`\`\``,
@@ -37,7 +37,7 @@ module.exports = {
       msg.channel.send({ embeds: [embed] });
     } catch (err) {
       const embed = new EmbedBuilder()
-        .setColor(0x1fd66e)
+        .setColor(config.colors.embed_gray)
         .addFields({ name: ":inbox_tray: In: ", value: `\`\`\`${code}\`\`\`` })
         .addFields({
           name: ":outbox_tray: Out: ",

@@ -23,7 +23,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle("Why? Why? Why?")
       .setDescription(body.why)
-      .setColor("Random");
+      .setColor(config.colors.embed_gray);
 
     msg.channel.send({ embeds: [embed] });
   },

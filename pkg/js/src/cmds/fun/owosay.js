@@ -1,24 +1,24 @@
 // Software created by Jack Meng (AKA exoad). Licensed by the included "LICENSE" file. If this file is not found, the project is fully copyrighted.
 
 const { EmbedBuilder } = require("discord.js");
-const superagent = require("superagent");
 const fx = require("../../fx.js");
 
 module.exports = {
   config: {
-    name: "owoify",
+    name: "owosay",
     category: "Fun",
-    description: "Make your message be OwOified",
+    description: "Tell me to say something in a cute (*cringes*) manner",
     usage: "A sentence after the initial command like so: owoify [sentence]",
-    aliases: [`uwuify`],
+    aliases: [`uwusay`],
   },
   run: async (
     /** @type {{ commands: any[]; }} */ bot,
     /** @type {{ channel: { send: (arg0: { embeds: EmbedBuilder[]; }) => void; }; }} */ msg,
     /** @type {any} */ args,
-    /** @type {any} */ config,
-    bot_db
+    /** @type {any} */ config, bot_db
   ) => {
+    // @ts-ignore
+    msg.delete();
     // @ts-ignore
     if (!args[0]) return msg.channel.send("<:ohno:1104517527180157018> y-you didn't provide anything!");
     let phrase = args.join("%20");

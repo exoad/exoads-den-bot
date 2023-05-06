@@ -23,5 +23,4 @@ function interactions() {
   return bot_db.get("bot.interactions_counter");
 }
 
-
 module.exports = { interaction_increment, interactions };

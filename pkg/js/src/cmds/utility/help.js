@@ -49,6 +49,8 @@ module.exports = {
       }
       const embed = new EmbedBuilder()
         .setTitle("Detailed Command Pool")
+        // @ts-ignore
+        .setColor(config.colors.embed_gray)
         .setDescription(
           "Use this command like: `" +
             config.prefix +
@@ -91,7 +93,8 @@ module.exports = {
             }
           )
           .setTimestamp()
-          .setColor("Random");
+          // @ts-ignore
+          .setColor(config.colors.embed_gray);
 
         // @ts-ignore
         msg.channel.send({ embeds: [embed] });

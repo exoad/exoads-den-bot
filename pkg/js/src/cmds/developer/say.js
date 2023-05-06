@@ -5,7 +5,7 @@ const { EmbedBuilder } = require("discord.js");
 module.exports = {
   config: {
     name: "say",
-    category: "",
+    category: "Developer",
     description: "",
     usage: "",
     aliases: [``],

@@ -4,6 +4,9 @@ const { exec } = require("child_process");
 const { stringify } = require("querystring");
 const { BANNED_WORDS } = require("../../../ipkg/config/h.json");
 
+/**
+ * @param {string | any[]} arr
+ */
 function randomFromArr(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
 
@@ -14,12 +17,30 @@ function randomFromArr(arr) {
 
 const cmdexec = require("child_process").exec;
 
+/**
+ * @param {string} cmd
+ * @param {(arg0: string) => void} callback
+ */
 function exec_command(cmd, callback) {
   exec(cmd, function (error, stdout, stderr) {
     callback(stdout);
   });
 }
 
+/**
+ * @param {string} cmd
+ * @param {(arg0: string, arg1: import("child_process").ExecException | null, arg2: string) => void} callback
+ */
+function exec_command_2(cmd, callback) {
+  exec(cmd, function (error, stdout, stderr) {
+    // @ts-ignore
+    callback(error, stdout, stderr);
+  });
+}
+
+/**
+ * @param {string} match
+ */
 function matchNumero(match) {
   const numeroLookup = {
     a: ["4"],
@@ -34,6 +55,9 @@ function matchNumero(match) {
   return numeroLookup[match.toLowerCase()] || match;
 }
 
+/**
+ * @param {string} str
+ */
 function getNotOks(str) {
   str = str.toLowerCase();
   const matchedWords = new Set();
@@ -65,4 +89,4 @@ function getNotOks(str) {
   return result;
 }
 
-module.exports = { randomFromArr, getNotOks, matchNumero, exec_command };
+module.exports = { randomFromArr, getNotOks, matchNumero, exec_command, exec_command_2 };

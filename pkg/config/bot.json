@@ -9,10 +9,14 @@
       "Utility",
       "Fun",
       "Advisory",
-      "Developer"
+      "Developer",
+      "Informational"
     ]
   },
   "use_globalCmdTimeout": true,
   "globalCmdTimeoutTime": 1750,
-  "name": "daoxe"
+  "name": "daoxe",
+  "colors": {
+    "embed_gray": "#2b2d31"
+  }
 }

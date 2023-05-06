@@ -5,7 +5,7 @@ const request = require("node-superfetch");
 module.exports = {
   config: {
     name: "advice",
-    category: "Fun",
+    category: "Informational",
     description: "Gives advice",
     usage: "No arguments",
     aliases: [],
@@ -23,7 +23,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle(";D")
       .setDescription(`${body.slip.advice}`)
-      .setColor("Random");
+      .setColor(config.colors.embed_gray);
 
     msg.channel.send({ embeds: [embed] });
   },

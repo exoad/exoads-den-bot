@@ -15,7 +15,7 @@ module.exports = {
     /** @type {any} */ config, bot_db
   ) => {
     const embed = new EmbedBuilder()
-      .setColor("Random")
+      .setColor(config.colors.embed_gray)
       .setDescription(
         "```" + Array.from(bot.commands.keys()).toString() + "```"
       )
