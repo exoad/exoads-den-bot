@@ -26,7 +26,7 @@ module.exports = {
       fx.java("Changelog", "", function (callback) {
         m.channel.send({
           embeds: [
-            fx.embed().setDescription("```" + callback.toString() + "```"),
+            fx.embed().setDescription("```ini\n" + callback.toString() + "```"),
           ],
         });
       });
