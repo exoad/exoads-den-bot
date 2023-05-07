@@ -120,6 +120,20 @@ function embed() {
   );
 }
 
+/**
+ * @param {any} string1
+ * @param {any[]} arr
+ */
+function match_arr(string1, arr) {
+  let x = false;
+  arr.forEach((/** @type {boolean} */ x) => {
+    if (string1 == x) {
+      x = true;
+    }
+  });
+  return x;
+}
+
 module.exports = {
   randomFromArr,
   getNotOks,
@@ -128,4 +142,5 @@ module.exports = {
   exec_command_2,
   java,
   embed,
+  match_arr
 };

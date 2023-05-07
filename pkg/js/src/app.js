@@ -47,6 +47,7 @@ bot.once("ready", () => {
       _.underline(bot.user?.username + "#" + bot.user?.discriminator)
   );
 });
+const fx = require("./fx");
 
 bot.on("messageCreate", async (msg) => {
   if (
@@ -58,9 +59,19 @@ bot.on("messageCreate", async (msg) => {
     msg.channel.send(
       `hoi! my prefix is: \`${config.prefix}\`\nyou then can use \`${config.prefix}help\` to get more information on commands you can use!`
     );
-  else if (msg.content == "hi daoxe") {
-    const fx = require("./fx");
+  else if (
+    fx.match_arr(msg.content, [
+      "hello daoxe",
+      "yo daoxe",
+      "hi daoxe",
+      "hoi daoxe",
+      "daoxe :3",
+      "heya daoxe",
+      "daoxe?",
+    ])
+  ) {
     msg.reply(fx.randomFromArr(config.dynamics.hello));
+    return;
   }
 });
 
