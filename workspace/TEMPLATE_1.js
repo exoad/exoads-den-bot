@@ -1,5 +1,5 @@
 // Software created by Jack Meng (AKA exoad). Licensed by the included "LICENSE" file. If this file is not found, the project is fully copyrighted.
-
+// @ts-nocheck
 // @ts-ignore
 const { EmbedBuilder } = require("discord.js");
 
@@ -29,7 +29,6 @@ module.exports = {
   ) => {
     // @ts-ignore
     // @ts-ignore
-    msg.channel.send(fx_message.search_message()).then(async (m) => {
-    });
+    msg.channel.send(fx_message.search_message()).then(async (m) => {});
   },
 };

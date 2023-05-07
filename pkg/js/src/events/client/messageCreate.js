@@ -15,7 +15,7 @@ module.exports = async (
   /** @type {{ author: { bot: any; id: string; }; channel: { type: string; }; content: { startsWith: (arg0: string) => any; slice: (arg0: string) => string; }; reply: (arg0: string) => void; }} */ msg
 ) => {
   try {
-    h.AUTO_REMOVE.forEach(x => {
+    h.AUTO_REMOVE.forEach((x) => {
       // @ts-ignore
       if (msg.content.toLowerCase().includes(x)) {
         // @ts-ignore
@@ -30,6 +30,7 @@ module.exports = async (
     )
       return;
     else if (msg.content.startsWith(config.prefix)) {
+      const bot_db = new Database("BOT_INTERNALS");
       // @ts-ignore
       // this fucking piece of code made me mald for 1 hour trying to find why the bot didnt react to messages and commands
       const args = msg.content.slice(config.prefix.length).trim().split(/ +/g);
@@ -43,7 +44,12 @@ module.exports = async (
           msg.author.id != config["exoad-id"]
         )
           return;
-        const bot_db = new Database("BOT_INTERNALS");
+        if (
+          cmdFile.config.category == "Advisory" &&
+          !bot_db.get("authorized_users").includes(msg.author.id)
+        ) {
+          return;
+        }
         cmdFile.run(bot, msg, args, config, bot_db);
         botgen.interaction_increment();
         if (
@@ -63,6 +69,7 @@ module.exports = async (
         ">>> message received: " +
           msg.content +
           "\nreceived as: " +
+          // @ts-ignore
           getNotOks(msg.content).toString()
       );
     }

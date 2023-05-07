@@ -27,16 +27,28 @@ module.exports = {
     // @ts-ignore
     /** @type {any} */ bot_db
   ) => {
-    if(args[0] == "add") {
-      if(args[1] == "authusers") {
+    if (args[0] == "add") {
+      if (args[1] == "authusers") {
         bot_db.push("authorized_users", args[2]);
         // @ts-ignore
         msg.channel.send("ok! done.");
       }
     } else if (args[0] == "list") {
-      if(args[1] == "authusers") {
+      if (args[1] == "authusers") {
         // @ts-ignore
-        msg.channel.send("authusers -> " + bot_db.get("authorized_users").toString());
+        msg.channel.send(
+          // @ts-ignore
+          "authusers -> " + bot_db.get("authorized_users").toString()
+        );
+      }
+    } else if (args[0] == "remove") {
+      if (args[1] == "authusers") {
+        bot_db.set(
+          "authorized_users",
+          bot_db.get("authorized_users").remove(args[2])
+        );
+        // @ts-ignore
+        msg.channel.send("removed " + args[2] + ". done!");
       }
     }
   },

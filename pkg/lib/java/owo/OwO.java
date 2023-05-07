@@ -88,7 +88,8 @@ public final class OwO
     static int PUNCTUATION_MAXIM = 4;
     static double ALTER_CHANCE = 1.0d;
 
-    public static Random RNG() {
+    public static Random RNG()
+    {
       return new Random();
     }
 
@@ -227,7 +228,7 @@ public final class OwO
 
   static String emot()
   {
-    return  roll(OwO_Conf.EMOTICON_UTF8_CHANCE)
+    return roll(OwO_Conf.EMOTICON_UTF8_CHANCE)
         ? OwO_Conf._EMOTICONS_UTF8_[OwO_Conf.RNG().nextInt(OwO_Conf._EMOTICONS_UTF8_.length)]
         : OwO_Conf._EMOTICONS_[OwO_Conf.RNG().nextInt(OwO_Conf._EMOTICONS_.length)];
   }
@@ -248,16 +249,18 @@ public final class OwO
           word = roll(0.5d) ? word + " " + emot() : emot() + " " + word;
         if (roll(OwO_Conf.EXPRESS_CHANCE))
           word = roll(0.5d) ? word + " " + expr() : expr() + " " + word;
-//        if (roll(OwO_Conf.PUNCTUATION_CHANCE))
-//        {
-//          int j = 0;
-//          String e = OwO_Conf._PUNCTUATION_[OwO_Conf.RNG().nextInt(OwO_Conf._PUNCTUATION_.length)];
-//          while (roll(OwO_Conf.PUNCTUATION_CHANCE_MULTIPLIER) && j <= OwO_Conf.PUNCTUATION_MAXIM)
-//          {
-//            word += e;
-//            j++;
-//          }
-//        }
+        // if (roll(OwO_Conf.PUNCTUATION_CHANCE))
+        // {
+        // int j = 0;
+        // String e =
+        // OwO_Conf._PUNCTUATION_[OwO_Conf.RNG().nextInt(OwO_Conf._PUNCTUATION_.length)];
+        // while (roll(OwO_Conf.PUNCTUATION_CHANCE_MULTIPLIER) && j <=
+        // OwO_Conf.PUNCTUATION_MAXIM)
+        // {
+        // word += e;
+        // j++;
+        // }
+        // }
       }
       sb.append(word).append(" ");
     }
