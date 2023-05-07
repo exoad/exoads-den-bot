@@ -8,19 +8,67 @@ const config = require("../../../../config/bot.json");
 const { getNotOks } = require("../../fx");
 const talkedRecently_userIDS = new Set();
 const botgen = require("../../fx_BotGeneric");
+const fx = require("../../fx");
 const h = require("../../../../../ipkg/config/h.json");
+const illegalsTrackrecord = new Map();
+const threshold = require("../../../../config/threshold.json");
 
 module.exports = async (
   /** @type {{ commands: { keys: () => import("querystring").ParsedUrlQueryInput | undefined; get: (arg0: any) => any; }; aliases: { get: (arg0: any) => any; }; }} */ bot,
   /** @type {{ author: { bot: any; id: string; }; channel: { type: string; }; content: { startsWith: (arg0: string) => any; slice: (arg0: string) => string; }; reply: (arg0: string) => void; }} */ msg
 ) => {
-  h.AUTO_REMOVE.forEach((x) => {
-    // @ts-ignore
-    if (msg.content.toLowerCase().includes(x)) {
+  // @ts-ignore
+  if (fx.getNotOks(msg.content).length > 0) {
+    msg.delete();
+
+    if (msg.author.id == config["exoad-id"]) {
       // @ts-ignore
-      msg.delete();
+      illegalsTrackrecord.set(
+        msg.author.id,
+        !illegalsTrackrecord.has(msg.author.id)
+          ? 1
+          : illegalsTrackrecord.get(msg.author.id) + 1
+      );
+      if (
+        illegalsTrackrecord.has(msg.author.id) &&
+        illegalsTrackrecord.get(msg.author.id) >= threshold.illegal_max
+      ) {
+        const guild = bot.guilds.cache.get("851999446057222144");
+        const role = guild.roles.cache.get(config.roles.muted);
+        const member = await guild.members.fetch(msg.author.id);
+        try {
+          member.roles.add(role);
+        } catch (err) {
+          if (err == "Missing Permissions") {
+            botgen.l0g(
+              "Tried to mute a higherup, oops...",
+              null,
+              bot,
+              msg,
+              null
+            );
+            return;
+          } else {
+            console.error(err);
+          }
+        }
+      }
+      botgen.l0g(
+        "Unsafe operation performed by user: " +
+          msg.author.id +
+          "\nwith literal: " +
+          msg.content +
+          "\nStock Left" +
+          illegalsTrackrecord.get(msg.author.id) +
+          "/" +
+          threshold.illegal_max,
+        null,
+        bot,
+        msg,
+        "Red"
+      );
     }
-  });
+  }
 
   if (msg.author.bot || msg.channel.type === "dm") {
     return;

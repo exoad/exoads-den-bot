@@ -1,22 +1,27 @@
 == Changelog for "daoxe" ==
 ** Author: Jack Meng
-** Version: v0.0.1 (Beta)
+** Version: v0.0.2 (Beta)
 ** Description: Generic Update
 ** Changes:
-  [+] Added new commands:
-      1. why -> Why?
-      2. owoify -> owoify a message
-      3. owosay -> owoify but echos
-      4. nasa -> NASA's APOD
-      5. bot -> Information about the bot
-  [+] Added bot telemetry in regards to
-      telemetry counting
-  [+] Added new reply style with query message
-  [+] Emojis utilize
-  [-] Got rid of premature cache states for
-      profanity checking.
-  [-] Default command loader now is able to
-      detect Java Scripts and optimize the GC
-      directly using JNI
-  [+] Interop between Java and NodeJS for
-      quick extern development
+    [+] NASA APOD now efficiently caches previous
+        results
+    [+] Profanity now automatically gets checked
+        and if the user has constantly violated
+        the rule, they will be muted.
+    [+] SimplePoll command allows for a trusted
+        advisory member to automatically create a
+        poll.
+            - This command however requires a
+              tedious JSON format to work
+    [+] Added a logging function for the bot
+        to log actions done by itself or others
+        on the server. Details of what is logged
+        are always kept confidential
+    [-] Removed a NodeJS internal array buffer
+        issue that correlated to it crashing the
+        NodeJS process and then trying to restart.
+    [-] The default NodeJS GC has now been pressured
+        to run more often.
+    [+] Profanity checker now includes a wider
+        variation of checks done for just one slur
+        or word.

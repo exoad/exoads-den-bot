@@ -7,5 +7,4 @@ module.exports = async (
 ) => {
   console.log("[READY_EVENT_HANDLER] Online...");
   bot.user.setActivity("www.pixiv.net");
-  botgen.l0g("I am online!", null, bot, msg, "Green");
 };

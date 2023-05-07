@@ -28,6 +28,12 @@
     "workpls": "<a:workpls:1104541317666713742>",
     "reading_book": "<:reading_book:1104541782638866472>"
   },
+  "channels": {
+    "advisory_channel": "1091133699606724628"
+  },
+  "roles": {
+    "muted": "1079564977926582382"
+  },
   "premade_messages_endian": [
     "searching through the archives",
     "looking through the bookshelves",
