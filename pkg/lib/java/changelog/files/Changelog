@@ -8,6 +8,10 @@
     [+] Profanity now automatically gets checked
         and if the user has constantly violated
         the rule, they will be muted.
+    [+] A system evaluate REPL command has been
+        added for trusted users to use where
+        the user is able to send commands to
+        directly execute on the BASH shell.
     [+] SimplePoll command allows for a trusted
         advisory member to automatically create a
         poll.
