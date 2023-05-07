@@ -80,7 +80,7 @@ public final class OwO
   {
 
     static double STUTTER_CHANCE = 0.4d;
-    static double EMOTICON_CHANCE = 0.6d;
+    static double EMOTICON_CHANCE = 0.4d;
     static double EMOTICON_UTF8_CHANCE = Charset.isSupported("utf8") ? EMOTICON_CHANCE : 0d;
     static double EXPRESS_CHANCE = 0.4d;
     static double PUNCTUATION_CHANCE = 0.1d;
