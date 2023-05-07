@@ -1,6 +1,7 @@
 // Software created by Jack Meng (AKA exoad). Licensed by the included "LICENSE" file. If this file is not found, the project is fully copyrighted.
 
 const { EmbedBuilder } = require("discord.js");
+const fxBotGen = require("../../fx_BotGeneric.js");
 
 module.exports = {
   config: {
@@ -28,6 +29,12 @@ module.exports = {
       msg.channel.send(
         // @ts-ignore
         "Oh?? I couldn't find the avatar for that user! Maybe they don't have it set?"
+      );
+      fxBotGen.l0g(
+        "Acquired an invalid avatar handle, possible reasons:\n?",
+        null,
+        bot,
+        msg
       );
       return;
     }

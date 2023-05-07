@@ -17,6 +17,9 @@ const _ = require("ansi-colors");
 const express = require("express");
 const app = express();
 const port = config.local["server-port"];
+const { Database } = require("secure-db");
+const dbnames = require("../../config/db-names.json");
+const cache_db = new Database(dbnames["internal-cache"]);
 
 const bot = new Client({
   intents: [
@@ -24,6 +27,7 @@ const bot = new Client({
     IntentsBitField.Flags.GuildMessages,
     IntentsBitField.Flags.MessageContent,
   ],
+  ws: { properties: { browser: 'Discord iOS' } }
 });
 
 console.log(_.black.bgRedBright.bold.italic("Starting up the bot..."));
