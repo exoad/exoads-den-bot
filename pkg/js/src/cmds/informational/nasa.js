@@ -11,32 +11,42 @@ module.exports = {
     aliases: [``],
   },
   run: async (
+    // @ts-ignore
     /** @type {{ commands: any[]; }} */ bot,
     /** @type {{ channel: { send: (arg0: { embeds: EmbedBuilder[]; }) => void; }; }} */ msg,
+    // @ts-ignore
     /** @type {any} */ args,
     /** @type {any} */ config,
+    // @ts-ignore
     bot_db
   ) => {
-    const { body } = await superagent.get(
-      `https://api.nasa.gov/planetary/apod?api_key=${
-        require("../../../../../ipkg/config/h.json").api_keys.nasa
-      }`
-    );
+    // @ts-ignore
+    msg.channel
+      // @ts-ignore
+      .send(config.emojis.writing_down + " searching through the bookshelves")
+      // @ts-ignore
+      .then(async (m) => {
+        m.edit(config.emojis.happy_look + " found it!");
+        const { body } = await superagent.get(
+          `https://api.nasa.gov/planetary/apod?api_key=${
+            require("../../../../../ipkg/config/h.json").api_keys.nasa
+          }`
+        );
 
-    if (body.hdurl == undefined) {
-      const embed = new EmbedBuilder()
-        .setTitle(`${body.title}`)
-        .setDescription(`${body.explanation}`)
-        .setColor(config.colors.embed_gray);
-
-      msg.channel.send({ embeds: [embed] });
-    } else {
-      const embed = new EmbedBuilder()
-        .setTitle(`${body.title}`)
-        .setDescription(`${body.explanation}`)
-        .setImage(`${body.hdurl}`)
-        .setColor(config.colors.embed_gray);
-      msg.channel.send({ embeds: [embed] });
-    }
+        if (body.hdurl == undefined) {
+          const embed = new EmbedBuilder()
+            .setTitle(`${body.title}`)
+            .setDescription(`${body.explanation}`)
+            .setColor(config.colors.embed_gray);
+          m.channel.send({ embeds: [embed] });
+        } else {
+          const embed = new EmbedBuilder()
+            .setTitle(`${body.title}`)
+            .setDescription(`${body.explanation}`)
+            .setImage(`${body.hdurl}`)
+            .setColor(config.colors.embed_gray);
+          m.channel.send({ embeds: [embed] });
+        }
+      });
   },
 };

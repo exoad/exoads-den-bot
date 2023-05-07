@@ -3,6 +3,7 @@
 const { exec } = require("child_process");
 const { stringify } = require("querystring");
 const { BANNED_WORDS } = require("../../../ipkg/config/h.json");
+const { EmbedBuilder } = require("discord.js");
 
 /**
  * @param {string | any[]} arr
@@ -35,6 +36,29 @@ function exec_command_2(cmd, callback) {
   exec(cmd, function (error, stdout, stderr) {
     // @ts-ignore
     callback(error, stdout, stderr);
+  });
+}
+
+/**
+ * @param {string} libname
+ * @param {string} args
+ * @param {(arg0: string) => void} consumer
+ */
+function java(libname, args, consumer) {
+  exec_command("pwd", function (callback) {
+    exec_command(
+      "cd " +
+        callback.replace("\n", "") +
+        "/pkg/lib/java/" +
+        libname.toLowerCase() +
+        " && java " +
+        libname +
+        ".java" +
+        (!args ? "" : " " + args),
+      function (ern) {
+        consumer(ern);
+      }
+    );
   });
 }
 
@@ -89,4 +113,19 @@ function getNotOks(str) {
   return result;
 }
 
-module.exports = { randomFromArr, getNotOks, matchNumero, exec_command, exec_command_2 };
+function embed() {
+  // @ts-ignore
+  return new EmbedBuilder().setColor(
+    "" + require("../../config/bot.json").colors.embed_gray
+  );
+}
+
+module.exports = {
+  randomFromArr,
+  getNotOks,
+  matchNumero,
+  exec_command,
+  exec_command_2,
+  java,
+  embed,
+};

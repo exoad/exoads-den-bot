@@ -1,35 +1,35 @@
 // Software created by Jack Meng (AKA exoad). Licensed by the included "LICENSE" file. If this file is not found, the project is fully copyrighted.
 
-// @ts-ignore
 const { EmbedBuilder } = require("discord.js");
 
-// @ts-ignore
 const fx_message = require("../../fx_Messages.js");
-// @ts-ignore
 const fx = require("../../fx.js");
 
 module.exports = {
   config: {
-    name: "",
-    category: "",
-    description: "",
-    usage: "",
-    aliases: [``],
+    name: "changes",
+    category: "Utility",
+    description: "View the changes made to the latest iteration!",
+    usage: "No arguments accepted!",
+    aliases: [`changelog`],
   },
   run: async (
-    // @ts-ignore
     /** @type {{ commands: any[]; }} */ bot,
     /** @type {{ channel: { send: (arg0: { embeds: EmbedBuilder[]; }) => void; }; }} */ msg,
-    // @ts-ignore
     /** @type {any} */ args,
-    // @ts-ignore
     /** @type {any} */ config,
-    // @ts-ignore
     /** @type {any} */ bot_db
   ) => {
     // @ts-ignore
-    // @ts-ignore
     msg.channel.send(fx_message.search_message()).then(async (m) => {
+      m.edit(config.emojis.happy_look + " found it!");
+      fx.java("Changelog", "", function (callback) {
+        m.channel.send({
+          embeds: [
+            fx.embed().setDescription("```" + callback.toString() + "```"),
+          ],
+        });
+      });
     });
   },
 };

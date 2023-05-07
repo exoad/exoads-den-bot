@@ -1,0 +1,20 @@
+// Software created by Jack Meng (AKA exoad). Licensed by the included "LICENSE" file. If this file is not found, the project is fully copyrighted.
+
+public final class API_TEMPLATE
+{
+  private static void _return(String argument)
+  {
+    System.out.println(argument);
+    System.exit(0);
+  }
+
+  public static void main(String... args)
+  {
+
+    if (args != null && args.length > 0)
+    {
+
+    }
+    else _return("T^T you have to input something");
+  }
+}

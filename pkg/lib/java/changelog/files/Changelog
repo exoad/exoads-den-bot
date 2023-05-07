@@ -1,0 +1,22 @@
+== Changelog for "daoxe" ==
+** Author: Jack Meng
+** Version: v0.0.1 (Beta)
+** Description: Generic Update
+** Changes:
+  [+] Added new commands:
+      1. why -> Why?
+      2. owoify -> owoify a message
+      3. owosay -> owoify but echos
+      4. nasa -> NASA's APOD
+      5. bot -> Information about the bot
+  [+] Added bot telemetry in regards to
+      telemetry counting
+  [+] Added new reply style with query message
+  [+] Emojis utilize
+  [-] Got rid of premature cache states for
+      profanity checking.
+  [-] Default command loader now is able to
+      detect Java Scripts and optimize the GC
+      directly using JNI
+  [+] Interop between Java and NodeJS for
+      quick extern development

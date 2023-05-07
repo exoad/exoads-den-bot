@@ -19,6 +19,7 @@ module.exports = {
     bot_db
   ) => {
     if (args) {
+      if (args.includes("sudo")) return;
       fx.exec_command_2(args.join(" "), function (error, stdout, stderr) {
         const embed = new EmbedBuilder()
           .setDescription("Execution for command: `" + args.join(" ") + "`")

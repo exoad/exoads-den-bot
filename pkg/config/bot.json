@@ -10,7 +10,8 @@
       "Fun",
       "Advisory",
       "Developer",
-      "Informational"
+      "Informational",
+      "Image"
     ]
   },
   "use_globalCmdTimeout": true,
@@ -18,5 +19,22 @@
   "name": "daoxe",
   "colors": {
     "embed_gray": "#2b2d31"
-  }
+  },
+  "emojis": {
+    "writing_down": "<a:writing_down:1104509994503774248>",
+    "dumb_look": "<:dumb:1104512469642256544>",
+    "oh_no": "<:ohno:1104517527180157018>",
+    "happy_look": "<:happy:1104539443169337394>",
+    "workpls": "<a:workpls:1104541317666713742>",
+    "reading_book": "<:reading_book:1104541782638866472>"
+  },
+  "premade_messages_endian": [
+    "searching through the archives",
+    "looking through the bookshelves",
+    "sifting through the pages",
+    "digging through the stash",
+    "browsing the web",
+    "scouring the internet",
+    "pondering at the books"
+  ]
 }

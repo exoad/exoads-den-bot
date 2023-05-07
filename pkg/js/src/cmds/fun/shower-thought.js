@@ -12,23 +12,17 @@ module.exports = {
   },
   run: async (
     // @ts-ignore
-    // @ts-ignore
-    // @ts-ignore
     /** @type {{ commands: any[]; }} */ bot,
     /** @type {{ channel: { send: (arg0: { embeds: EmbedBuilder[]; }) => void; }; }} */ msg,
     // @ts-ignore
-    // @ts-ignore
-    // @ts-ignore
     /** @type {any} */ args,
-    // @ts-ignore
-    // @ts-ignore
     // @ts-ignore
     /** @type {any} */ config
   ) => {
     // @ts-ignore
     msg.channel
       // @ts-ignore
-      .send("<a:writing_down:1104509994503774248> ok! fetching it now...")
+      .send(config.emojis.writing_down + "ok! fetching it now...")
       // @ts-ignore
       .then(async (m) => {
         m.delete();
@@ -47,7 +41,8 @@ module.exports = {
         if (!allowed.length)
           m.channel.send(
             // @ts-ignore
-            "<:dumb:1104512469642256544> **Oops**, the post I tried to fetch was marked as NSFW. Please try again! Sorry."
+            config.emojis.dumb_look +
+              "**Oops**, the post I tried to fetch was marked as NSFW. Please try again! Sorry."
           );
         const randomnumber = Math.floor(Math.random() * allowed.length);
         const embed = new EmbedBuilder()
