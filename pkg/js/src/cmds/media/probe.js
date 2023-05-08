@@ -7,7 +7,7 @@ const fx_message = require("../../fx_Messages.js");
 module.exports = {
   config: {
     name: "probe",
-    category: "Image",
+    category: "Media",
     description: "Access certain functions related to image manipulation",
     usage: "This command is highly specific! You first must provide a link to an image (or you can use the dynamic version of this command with \"dynprobe\"), then the method you want to use (you can provide just the \"list\" argument to see avaliable options, and then set properties after in the format of:\nproperty1_name=property1_value property2_name=property2_value.]\n\nFinal format:\nprobe [argument/link] [method_name] [properties]\n\nExample: probe https://cdn.website/image.png gaussian_blur iterations=1\n\nAvaliable arguments: {list,docs}",
     aliases: [``],
@@ -21,7 +21,7 @@ module.exports = {
   ) => {
     // @ts-ignore
     msg.channel.send(fx_message.search_message()).then(async (m) => {
-      
+
     });
   },
 };

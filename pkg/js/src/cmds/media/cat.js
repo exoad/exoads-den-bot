@@ -11,7 +11,7 @@ const fx = require("../../fx.js");
 module.exports = {
   config: {
     name: "cat",
-    category: "Image",
+    category: "Media",
     description: "Meow! Purr~~",
     usage: "No arguments accepted!",
     aliases: [`rndcat`, `randomcat`],

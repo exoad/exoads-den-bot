@@ -78,18 +78,22 @@ module.exports = {
             {
               name: "Description",
               value: "```\n" + fcmd.config.description + "```",
+              inline: true,
             },
             {
               name: "Category",
               value: "`" + fcmd.config.category + "`",
+              inline: true,
             },
             {
               name: "Usage",
               value: "```\n" + fcmd.config.usage + "```",
+              inline: true,
             },
             {
               name: "Aliases",
               value: "```" + Array.from(fcmd.config.aliases).toString() + "```",
+              inline: true,
             }
           )
           .setTimestamp()
