@@ -22,7 +22,7 @@ module.exports = {
     /** @type {any} */ config,
     /** @type {any} */ bot_db
   ) => {
-    if (args[0] == "help") {
+    if (!args || args[0] == "help") {
       // @ts-ignore
       msg.channel.send(
         // @ts-ignore

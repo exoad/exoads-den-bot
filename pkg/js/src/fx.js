@@ -134,6 +134,16 @@ function match_arr(string1, arr) {
   return x;
 }
 
+function match_strarr_ignorecase(string1, arr) {
+  let x = false;
+  arr.forEach((/** @type {boolean} */ r) => {
+    if (string1.toLowerCase() == r) {
+      x = true;
+    }
+  });
+  return x;
+}
+
 module.exports = {
   randomFromArr,
   getNotOks,
@@ -142,5 +152,6 @@ module.exports = {
   exec_command_2,
   java,
   embed,
-  match_arr
+  match_arr,
+  match_strarr_ignorecase
 };

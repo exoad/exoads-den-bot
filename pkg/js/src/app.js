@@ -27,7 +27,7 @@ const bot = new Client({
     IntentsBitField.Flags.GuildMessages,
     IntentsBitField.Flags.MessageContent,
   ],
-  ws: { properties: { browser: 'Discord iOS' } }
+  ws: { properties: { browser: "Discord iOS" } },
 });
 
 console.log(_.black.bgRedBright.bold.italic("Starting up the bot..."));
@@ -64,7 +64,7 @@ bot.on("messageCreate", (msg) => {
       `hoi! my prefix is: \`${config.prefix}\`\nyou then can use \`${config.prefix}help\` to get more information on commands you can use!`
     );
   else if (
-    fx.match_arr(msg.content, [
+    fx.match_strarr_ignorecase(msg.content, [
       "hello daoxe",
       "yo daoxe",
       "hi daoxe",
@@ -72,6 +72,9 @@ bot.on("messageCreate", (msg) => {
       "daoxe :3",
       "heya daoxe",
       "daoxe?",
+      "daoxe!",
+      "whos daoxe",
+      "who's daoxe",
     ])
   ) {
     msg.reply(fx.randomFromArr(config.dynamics.hello));

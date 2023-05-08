@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launcher",
+      "request": "launch",
+      "mainClass": "Launcher",
+      "projectName": "exoads-den-bot_eafbc42e"
+    },
+    {
+      "type": "java",
       "name": "OwO",
       "request": "launch",
       "mainClass": "owo.OwO",

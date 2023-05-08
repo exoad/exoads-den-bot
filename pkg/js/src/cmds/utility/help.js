@@ -11,7 +11,7 @@ module.exports = {
     usage:
       "A single argument is required.\nThis argument [ command ], the command you wish to find more information on.\nExample usage: " +
       require("../../../../config/bot.json").prefix +
-      "search me",
+      "help ping", // this part was originally from an older template
     aliases: [`cmd`],
   },
   run: async (
