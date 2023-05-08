@@ -126,8 +126,8 @@ function embed() {
  */
 function match_arr(string1, arr) {
   let x = false;
-  arr.forEach((/** @type {boolean} */ x) => {
-    if (string1 == x) {
+  arr.forEach((/** @type {boolean} */ r) => {
+    if (string1 == r) {
       x = true;
     }
   });

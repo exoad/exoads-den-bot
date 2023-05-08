@@ -53,7 +53,7 @@ bot.once("ready", () => {
 });
 const fx = require("./fx");
 
-bot.on("messageCreate", async (msg) => {
+bot.on("messageCreate", (msg) => {
   if (
     // @ts-ignore
     msg.content == `<@${bot.user.id}>` ||

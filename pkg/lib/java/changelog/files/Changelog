@@ -29,3 +29,6 @@
     [+] Profanity checker now includes a wider
         variation of checks done for just one slur
         or word.
+    [+] Added a cat command for fetching a random
+        cat picture
+    [+] EULA agreement file

@@ -113,7 +113,9 @@ module.exports = async (
           "\nbot_obj=" +
           bot.toString() +
           "\nUser timed out for: " +
-          config.globalCmdTimeoutTime,
+          config.globalCmdTimeoutTime +
+          "\ntotal: " +
+          msg.content,
         null,
         bot,
         msg
