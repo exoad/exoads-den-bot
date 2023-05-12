@@ -1,4 +1,4 @@
-package java.singles;
+package javar.singles;
 
 import javax.swing.*;
 import java.awt.*;

@@ -153,5 +153,5 @@ module.exports = {
   java,
   embed,
   match_arr,
-  match_strarr_ignorecase
+  match_strarr_ignorecase,
 };

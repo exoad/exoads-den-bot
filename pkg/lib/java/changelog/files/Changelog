@@ -3,8 +3,6 @@
 ** Version: v0.0.2 (Beta)
 ** Description: Generic Update
 ** Changes:
-    [+] NASA APOD now efficiently caches previous
-        results
     [+] Profanity now automatically gets checked
         and if the user has constantly violated
         the rule, they will be muted.
@@ -29,6 +27,8 @@
     [+] Profanity checker now includes a wider
         variation of checks done for just one slur
         or word.
+    [+] One word stories compiler that is compiled
+        occasionally to the advisory channel.
     [+] Added a cat command for fetching a random
         cat picture
     [+] EULA agreement file

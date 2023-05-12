@@ -11,8 +11,8 @@ const { fetchAllMessages } = require("../../fx_BotGeneric.js");
 
 module.exports = {
   config: {
-    name: "oneword_compile",
-    category: "Advisory",
+    name: "fetch_msg_chnl",
+    category: "Developer",
     description: "",
     usage: "",
     aliases: [`fetchmsgchnl`],
@@ -30,7 +30,12 @@ module.exports = {
   ) => {
     // @ts-ignore
     msg.channel.send("querying...\nthis can take some time").then(async (m) => {
-      let channel_id = "1090758966029590679";
+      m.edit("queried!");
+      if (!args) {
+        m.channel.send("a channel id is required as the first argument");
+        return;
+      }
+      let channel_id = args[0];
       try {
         let e = await fetchAllMessages(bot, channel_id);
         let fin = "";
@@ -56,7 +61,7 @@ module.exports = {
               line_width += words[i].length + 1;
             }
           });
-          bot.channels.cache.get(config.channels.advisory_channel).send({
+          msg.channel.send({
             files: [
               new AttachmentBuilder(Buffer.from(fin)).setName(
                 "fetched_" + channel_id + ".txt"
@@ -71,19 +76,8 @@ module.exports = {
             .embed()
             .setDescription("```\n" + fin + "```")
             .setFooter({ text: "that was intense?!" });
-          bot.channels.cache
-            .get(config.channels.advisory_channel)
-            .send({ embeds: [embed] });
+          msg.channel.send({ embeds: [embed] });
         }
-        bot.channels.cache
-          .get(config.channels.advisory_channel)
-          .send(
-            "**hoi!**\na newer compilation of the one-word-stories exotic channel has been made. check it out above " +
-              config.emojis.dumb_look
-          );
-        m.edit(
-          config.emojis.happy_look + " yay!\nmanaged to process all of that!"
-        );
       } catch (err) {
         if (err) {
           console.error(err);

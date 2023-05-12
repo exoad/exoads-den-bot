@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.singles.ColorPane;
+import javar.singles.ColorPane;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -15,8 +15,6 @@ import java.util.function.Consumer;
 
 import javax.swing.*;
 
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatArcDarkIJTheme;
 
 import java.awt.*;
@@ -25,8 +23,10 @@ final class Launcher
 {
   static
   {
-    System.setProperty("sun.java2d.opengl", "true");
+    System.setProperty("sun.java2d.opengl", "True");
   }
+
+  static final String START_CMD = "node --expose-gc .";
 
   static class PStream
       implements Runnable
@@ -65,7 +65,7 @@ final class Launcher
     {
       if ("nogui".equals(args[0]))
       {
-
+        exec("node --expose-gc .");
       }
     }
     else
@@ -87,7 +87,8 @@ final class Launcher
       runner.schedule(new TimerTask() {
         @Override public void run()
         {
-          queue.pollFirst().run();
+          if (queue.getFirst() != null)
+            queue.pollFirst().run();
         }
       }, 350L, 75L);
 
@@ -97,6 +98,18 @@ final class Launcher
       jb.setOpaque(true);
       jb.setBackground(green);
       jb.setForeground(Color.BLACK);
+      jb.addActionListener(ev -> {
+        if (!started.get())
+          queue.addLast(() -> {
+            try
+            {
+              exec(START_CMD);
+            } catch (IOException e)
+            {
+              e.printStackTrace();
+            }
+          });
+      });
 
       jf.getContentPane().add(splitPane);
       jf.pack();
