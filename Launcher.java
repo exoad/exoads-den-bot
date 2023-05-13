@@ -34,9 +34,9 @@ final class Launcher
 {
   static
   {
-    System.setProperty("sun.java2d.opengl", "True");
     System.setOut(new PrintStream(new text_outputstream()));
     System.setErr(System.out);
+    System.setProperty("sun.java2d.opengl", "True");
   }
 
   static final String _green = "#b0db5e", _red = "#d94d45", _pink = "#e673b0", _yellow = "#e6db73";
@@ -64,6 +64,16 @@ final class Launcher
   static String yellow_fg(String str)
   {
     return make_fg(_yellow, str);
+  }
+
+  static String important(String str)
+  {
+    return "<p style=\"background-color:" + _red + ";color:#000\">" + str + "</p>";
+  }
+
+  static String warn(String str)
+  {
+    return "<p style=\"background-color:" + _yellow + ";color:#000\">" + str + "</p>";
   }
 
   public static Color hexToRGB(String hex)
@@ -167,7 +177,6 @@ final class Launcher
 
   static JEditorPane internalConsole = new JEditorPane("text/html", "<html><body>");
   static ColorPane console = new ColorPane();
-  static final Deque< Runnable > queue = new ArrayDeque<>();
   static final Timer runner = new Timer("daoxe-java-launcher-thread");
   static final Stack< String > logs = new Stack<>();
   static final ExecutorService thread_service = Executors.newCachedThreadPool();
@@ -186,19 +195,9 @@ final class Launcher
   public static void main(String... args)
       throws Exception
   {
+    long start = System.currentTimeMillis();
     internalConsole = new JEditorPane("text/html",
         "<html><body style=\"font-family:" + varFont.getFamily() + ";font-size:9.5px;color:#ffff;\">");
-    long start = System.currentTimeMillis();
-    runner.schedule(new TimerTask() {
-      @Override public void run()
-      {
-        if (!queue.isEmpty())
-        {
-          queue.pollFirst().run();
-          System.out.println("executing task[" + (queue.size()) + "]");
-        }
-      }
-    }, 350L, 25L);
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     ge.registerFont(varFont);
     wrap< Optional< Process > > process = new wrap<>(Optional.empty());
@@ -229,6 +228,21 @@ final class Launcher
       splitPane.setOpaque(true);
       wrap< Boolean > started = new wrap<>(false);
 
+      JButton gcCaller = new JButton("Java:GC");
+      gcCaller.addActionListener(ev -> {
+        long currentFreeHeap = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1000000;
+        System.gc();
+        System.out.println(pink_fg("Java GC called.<br>Original: " + currentFreeHeap + "mB ") + "Current: "
+            + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1000000) + "mB<br>Net: "
+            + (currentFreeHeap - ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1000000))
+            + "mB");
+      });
+
+      JButton processInputTest = new JButton("I/O Test");
+      processInputTest.addActionListener(ev -> {
+
+      });
+
       JButton jb = new JButton("Start");
       jb.setOpaque(true);
       jb.setBackground(hexToRGB(_green));
@@ -239,7 +253,7 @@ final class Launcher
           try
           {
             process.set(Optional.of(exec(START_CMD)));
-            print(yellow_fg("started the process with command:<br>" + START_CMD));
+            print(important("started the process with command:<br>" + START_CMD));
           } catch (IOException e)
           {
             e.printStackTrace();
@@ -251,7 +265,7 @@ final class Launcher
           process.get().ifPresent(x -> {
             x.destroy();
             process.set(Optional.empty());
-            print(red_fg("Killed the desired process: " + x.pid()));
+            print(important("Killed the desired process: " + x.pid()));
           });
           jb.setText("Start");
         }
@@ -280,6 +294,7 @@ final class Launcher
       controlPane.setLayout(new GridLayout(13, 1));
       controlPane.setPreferredSize(new Dimension(750 / 2, 850));
       controlPane.add(jb);
+      controlPane.add(gcCaller);
 
       JSplitPane temp1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
       temp1.setPreferredSize(new Dimension(750 / 2, 850));
@@ -296,7 +311,7 @@ final class Launcher
       jf.setLocationRelativeTo(null);
       jf.setVisible(true);
 
-      print(green_fg("Daoxe GUI Launcher effective!"));
+      print(warn("Daoxe GUI Launcher effective!<br>Took: " + (System.currentTimeMillis() - start) + "ms"));
 
     }
   }

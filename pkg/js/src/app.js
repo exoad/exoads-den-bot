@@ -9,10 +9,9 @@ const {
   IntentsBitField,
   cleanContent,
 } = require("discord.js");
-
 const config = require("../../config/bot.json");
 const internal = require("../../../ipkg/config/h.json"); // should only be required here
-
+const stdinreader = require("./libjs/stdin.js");
 const _ = require("ansi-colors");
 const express = require("express");
 const app = express();
@@ -20,7 +19,7 @@ const port = config.local["server-port"];
 const { Database } = require("secure-db");
 const dbnames = require("../../config/db-names.json");
 const cache_db = new Database(dbnames["internal-cache"]);
-
+const fx = require("./fx");
 const bot = new Client({
   intents: [
     IntentsBitField.Flags.Guilds,
@@ -31,6 +30,10 @@ const bot = new Client({
 });
 
 console.log(_.black.bgRedBright.bold.italic("Starting up the bot..."));
+
+stdinreader(function(str) {
+  console.log("received from stdin: " + str);
+});
 
 app.get("/", (_r, res) => res.send("The bot is online! :DD"));
 app.listen(port, () => console.log("Alive on port: " + port));
@@ -51,8 +54,6 @@ bot.once("ready", () => {
       _.underline(bot.user?.username + "#" + bot.user?.discriminator)
   );
 });
-const fx = require("./fx");
-
 bot.on("messageCreate", (msg) => {
   if (
     // @ts-ignore
@@ -81,5 +82,4 @@ bot.on("messageCreate", (msg) => {
     return;
   }
 });
-
 bot.login(internal["BOT-TOKEN"]);
