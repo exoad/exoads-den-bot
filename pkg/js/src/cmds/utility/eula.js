@@ -11,7 +11,7 @@ const fx = require("../../fx.js");
 module.exports = {
   config: {
     name: "eula",
-    category: "utility",
+    category: "Utility",
     description: "User Agreement",
     usage: "No Arguments Accepted",
     aliases: [`rules`],

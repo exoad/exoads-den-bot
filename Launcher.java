@@ -9,8 +9,6 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 import javar.singles.ColorPane;
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.Enumeration;
 import java.util.Optional;
 import java.util.Stack;
@@ -175,8 +173,21 @@ final class Launcher
     }
   }
 
+  public static void print2(String str)
+  {
+    try
+    {
+      ((HTMLEditorKit) console.getEditorKit()).insertHTML((HTMLDocument) console.getDocument(),
+          ((HTMLDocument) console.getDocument()).getLength(), str, 0, 0, null);
+    } catch (BadLocationException | IOException e)
+    {
+      e.printStackTrace();
+    }
+  }
+
   static JEditorPane internalConsole = new JEditorPane("text/html", "<html><body>");
   static ColorPane console = new ColorPane();
+  static Optional< PStream > stream = Optional.empty();
   static final Timer runner = new Timer("daoxe-java-launcher-thread");
   static final Stack< String > logs = new Stack<>();
   static final ExecutorService thread_service = Executors.newCachedThreadPool();
@@ -196,6 +207,7 @@ final class Launcher
       throws Exception
   {
     long start = System.currentTimeMillis();
+
     internalConsole = new JEditorPane("text/html",
         "<html><body style=\"font-family:" + varFont.getFamily() + ";font-size:9.5px;color:#ffff;\">");
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -240,7 +252,16 @@ final class Launcher
 
       JButton processInputTest = new JButton("I/O Test");
       processInputTest.addActionListener(ev -> {
-
+        if (Boolean.TRUE.equals(started.e) && process.get().isPresent())
+        {
+          if (process.get().get().isAlive())
+          {
+            new PrintStream(process.get().get().getOutputStream()).print("Test#297489237");
+            System.out.println(
+                green_fg("See the process output for details.<br>Printed a test message to the outputstream of process["
+                    + process.get().get().pid() + "]"));
+          }
+        }
       });
 
       JButton jb = new JButton("Start");
@@ -253,6 +274,8 @@ final class Launcher
           try
           {
             process.set(Optional.of(exec(START_CMD)));
+            stream = Optional.of(new PStream(process.get().get().getInputStream(), Launcher::print2));
+            thread_service.submit(stream.get());
             print(important("started the process with command:<br>" + START_CMD));
           } catch (IOException e)
           {
@@ -265,6 +288,8 @@ final class Launcher
           process.get().ifPresent(x -> {
             x.destroy();
             process.set(Optional.empty());
+            stream = Optional.empty();
+            console.setText("");
             print(important("Killed the desired process: " + x.pid()));
           });
           jb.setText("Start");
@@ -295,6 +320,7 @@ final class Launcher
       controlPane.setPreferredSize(new Dimension(750 / 2, 850));
       controlPane.add(jb);
       controlPane.add(gcCaller);
+      controlPane.add(processInputTest);
 
       JSplitPane temp1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
       temp1.setPreferredSize(new Dimension(750 / 2, 850));

@@ -6,22 +6,37 @@ import javax.swing.text.*;
 
 public class ColorPane extends JTextPane
 {
+  public static Color hexToRGB(String hex)
+  {
+    if (!hex.startsWith("#"))
+    {
+      /*--------------------------------- /
+      / this part is so hardcoded and bad /
+      /----------------------------------*/
+      hex = "#" + hex;
+    }
+    return new Color(
+        Integer.valueOf(hex.substring(1, 3), 16),
+        Integer.valueOf(hex.substring(3, 5), 16),
+        Integer.valueOf(hex.substring(5, 7), 16));
+  }
+
   static final Color D_Black = Color.getHSBColor(0.000f, 0.000f, 0.000f);
-  static final Color D_Red = Color.getHSBColor(0.000f, 1.000f, 0.502f);
-  static final Color D_Blue = Color.getHSBColor(0.667f, 1.000f, 0.502f);
-  static final Color D_Magenta = Color.getHSBColor(0.833f, 1.000f, 0.502f);
-  static final Color D_Green = Color.getHSBColor(0.333f, 1.000f, 0.502f);
-  static final Color D_Yellow = Color.getHSBColor(0.167f, 1.000f, 0.502f);
-  static final Color D_Cyan = Color.getHSBColor(0.500f, 1.000f, 0.502f);
-  static final Color D_White = Color.getHSBColor(0.000f, 0.000f, 0.753f);
+  static final Color D_Red = hexToRGB("#ff4245");
+  static final Color D_Blue = hexToRGB("#578cff");
+  static final Color D_Magenta = hexToRGB("#e54fff");
+  static final Color D_Green = hexToRGB("#7bff57");
+  static final Color D_Yellow = hexToRGB("#f9ff7b");
+  static final Color D_Cyan = hexToRGB("#4ed1b7");
+  static final Color D_White = hexToRGB("#f4f4f4");
   static final Color B_Black = Color.getHSBColor(0.000f, 0.000f, 0.502f);
-  static final Color B_Red = Color.getHSBColor(0.000f, 1.000f, 1.000f);
-  static final Color B_Blue = Color.getHSBColor(0.667f, 1.000f, 1.000f);
-  static final Color B_Magenta = Color.getHSBColor(0.833f, 1.000f, 1.000f);
-  static final Color B_Green = Color.getHSBColor(0.333f, 1.000f, 1.000f);
-  static final Color B_Yellow = Color.getHSBColor(0.167f, 1.000f, 1.000f);
-  static final Color B_Cyan = Color.getHSBColor(0.500f, 1.000f, 1.000f);
-  static final Color B_White = Color.getHSBColor(0.000f, 0.000f, 1.000f);
+  static final Color B_Red = hexToRGB("#f44a4a");
+  static final Color B_Blue = hexToRGB("#4088f4");
+  static final Color B_Magenta = hexToRGB("#ff6cf1");
+  static final Color B_Green = hexToRGB("#87ff62");
+  static final Color B_Yellow = hexToRGB("#f8ff65");
+  static final Color B_Cyan = hexToRGB("#58d2b4");
+  static final Color B_White = hexToRGB("#f4f4f4");
   static final Color cReset = Color.getHSBColor(0.000f, 0.000f, 1.000f);
   static Color colorCurrent = cReset;
   String remaining = "";
