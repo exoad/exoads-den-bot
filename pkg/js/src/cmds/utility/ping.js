@@ -1,6 +1,7 @@
 // Copyright 2023 Jack Meng. All rights reserved.
 // Use of this source code is governed by a GPL-style
 // license that can be found in the LICENSE file.
+const _ = require("ansi-colors");
 
 module.exports = {
   config: {
@@ -16,6 +17,7 @@ module.exports = {
     /** @type {any} */ args,
     /** @type {any} */ config
   ) => {
+    console.log(_.yellow("execed a ping command"));
     msg.channel
       .send("Playing ping pong... :ping_pong:")
       .then((/** @type {{ edit: (arg0: string) => void; }} */ m) => {

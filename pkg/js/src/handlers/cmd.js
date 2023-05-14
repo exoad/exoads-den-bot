@@ -29,7 +29,7 @@ module.exports = async (
         "\t" +
           (count + 1) +
           ") Command | " +
-          _.underline.bgMagentaBright.white(cmd.config.name) +
+          _.underline.magenta(cmd.config.name) +
           " has loaded" +
           " | Category: " +
           cmd.config.category +

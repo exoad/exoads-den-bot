@@ -22,7 +22,7 @@ module.exports = async (
         "\t" +
           (count + 1) +
           ") Event | " +
-          _.bgGreen.bold.white(name) +
+          _.green.bold(name) +
           " has loaded."
       );
       count++;

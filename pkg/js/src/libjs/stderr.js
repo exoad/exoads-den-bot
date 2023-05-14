@@ -2,11 +2,11 @@
 
 module.exports = function (fn) {
   var buf = "";
-  process.stdin.setEncoding("utf8");
-  process.stdin.on("data", function (s) {
+  process.stderr.setEncoding("utf8");
+  process.stderr.on("data", function (s) {
     buf += s;
   });
-  process.stdin
+  process.stderr
     .on("end", function () {
       fn(buf);
     })

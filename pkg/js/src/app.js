@@ -12,6 +12,7 @@ const {
 const config = require("../../config/bot.json");
 const internal = require("../../../ipkg/config/h.json"); // should only be required here
 const stdinreader = require("./libjs/stdin.js");
+const stderrreader = require("./libjs/stderr.js");
 const _ = require("ansi-colors");
 const express = require("express");
 const app = express();
@@ -29,11 +30,7 @@ const bot = new Client({
   ws: { properties: { browser: "Discord iOS" } },
 });
 
-console.log(_.black.bgRedBright.bold.italic("Starting up the bot..."));
-
-stdinreader(function(str) {
-  console.log("received from stdin: " + str);
-});
+console.log(_.black.red.italic("Starting up the bot..."));
 
 app.get("/", (_r, res) => res.send("The bot is online! :DD"));
 app.listen(port, () => console.log("Alive on port: " + port));
@@ -82,4 +79,11 @@ bot.on("messageCreate", (msg) => {
     return;
   }
 });
+
+console.error("Java - JS bridge armed");
+
+stdinreader(function (str) {
+  console.log("received from stdin: " + str);
+});
+
 bot.login(internal["BOT-TOKEN"]);

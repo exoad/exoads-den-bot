@@ -1,11 +1,13 @@
 // Software created by Jack Meng (AKA exoad). Licensed by the included "LICENSE" file. If this file is not found, the project is fully copyrighted.
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 
 import javar.singles.ColorPane;
@@ -26,7 +28,13 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridLayout;
+import java.awt.Insets;
 
 final class Launcher
 {
@@ -35,13 +43,42 @@ final class Launcher
     System.setOut(new PrintStream(new text_outputstream()));
     System.setErr(System.out);
     System.setProperty("sun.java2d.opengl", "True");
+    UIManager.put("TabbedPane.selectedBackground", hexToRGB("#000000"));
+    UIManager.put("Button.arc", 25);
+    UIManager.put("Component.arc", 500);
+    UIManager.put("TextComponent.arc", 5);
+    UIManager.put("ScrollBar.trackInsets", new Insets(2, 4, 2, 4));
   }
-
-  static final String _green = "#b0db5e", _red = "#d94d45", _pink = "#e673b0", _yellow = "#e6db73";
+  static JEditorPane internalConsole = new JEditorPane("text/html", "<html><body>");
+  static ColorPane console = new ColorPane();
+  static final String START_CMD = "node --expose-gc .";
+  static Optional< PStream > stream = Optional.empty();
+  static final Timer runner = new Timer("daoxe-java-launcher-thread");
+  static final Stack< String > logs = new Stack<>();
+  static final String _green = "#b0db5e", _red = "#d94d45", _pink = "#e673b0", _yellow = "#e6db73", _cyan = "#58d2b4";
+  static wrap< Boolean > started = new wrap<>(false);
+  static wrap< Optional< Thread > > ioProcess = new wrap<>(Optional.empty());
+  static final ExecutorService thread_service = Executors.newWorkStealingPool();
+  static Font varFont;
+  static
+  {
+    try
+    {
+      varFont = Font.createFont(Font.TRUETYPE_FONT, new File("javar/fonts/ttf/JetBrainsMono-Regular.ttf"));
+    } catch (FontFormatException | IOException e)
+    {
+      e.printStackTrace();
+    }
+  }
 
   static String make_fg(String hex, String str)
   {
     return "<p style=\"color:" + hex + "\">" + str + "</p>";
+  }
+
+  static String blue_fg(String str)
+  {
+    return make_fg(_cyan, str);
   }
 
   static String green_fg(String str)
@@ -88,8 +125,6 @@ final class Launcher
         Integer.valueOf(hex.substring(3, 5), 16),
         Integer.valueOf(hex.substring(5, 7), 16));
   }
-
-  static final String START_CMD = "node --expose-gc .";
 
   static class text_outputstream
       extends OutputStream
@@ -175,31 +210,21 @@ final class Launcher
 
   public static void print2(String str)
   {
-    try
-    {
-      ((HTMLEditorKit) console.getEditorKit()).insertHTML((HTMLDocument) console.getDocument(),
-          ((HTMLDocument) console.getDocument()).getLength(), str, 0, 0, null);
-    } catch (BadLocationException | IOException e)
-    {
-      e.printStackTrace();
-    }
+    console.appendANSI(str + "\n");
   }
 
-  static JEditorPane internalConsole = new JEditorPane("text/html", "<html><body>");
-  static ColorPane console = new ColorPane();
-  static Optional< PStream > stream = Optional.empty();
-  static final Timer runner = new Timer("daoxe-java-launcher-thread");
-  static final Stack< String > logs = new Stack<>();
-  static final ExecutorService thread_service = Executors.newCachedThreadPool();
-  static Font varFont;
-  static
+  public static void tell(String cmd, Process env)
   {
-    try
+    if (env != null)
     {
-      varFont = Font.createFont(Font.TRUETYPE_FONT, new File("javar/fonts/ttf/JetBrainsMono-Regular.ttf"));
-    } catch (FontFormatException | IOException e)
-    {
-      e.printStackTrace();
+      try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(env.getOutputStream())))
+      {
+        bw.write(cmd);
+        bw.flush();
+      } catch (Exception e)
+      {
+        e.printStackTrace();
+      }
     }
   }
 
@@ -207,7 +232,6 @@ final class Launcher
       throws Exception
   {
     long start = System.currentTimeMillis();
-
     internalConsole = new JEditorPane("text/html",
         "<html><body style=\"font-family:" + varFont.getFamily() + ";font-size:9.5px;color:#ffff;\">");
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -233,12 +257,31 @@ final class Launcher
           jf.setTitle("daoxe-dashboard:" + ((System.currentTimeMillis() - start) / 1000));
         }
       }, 1000L, 5000L);
+      runner.schedule(new TimerTask() { // watchdog for if the process itself stops without the button being pressed. by
+                                        // doing so it will be able to handle crashes and set program states to the
+                                        // proper states for further processing without messing up the launcher itself.
+                                        // this is especially useful as well for the hotreload command
+                                        // this command does not modify the process wrapper and instead only watches
+                                        // and alters program states
+                                        //
+                                        // hotreloading allows for the bot to be automatically restarted on code change
+                                        // or on a fixed interval
+        @Override public void run()
+        {
+          process.e.ifPresentOrElse(x -> {
+            if (!x.isAlive())
+            {
+            }
+          }, () -> {
+
+          });
+        }
+      }, 50L, 300L);
 
       JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
       splitPane.setPreferredSize(jf.getSize());
       splitPane.setDividerLocation(850 / 2);
       splitPane.setOpaque(true);
-      wrap< Boolean > started = new wrap<>(false);
 
       JButton gcCaller = new JButton("Java:GC");
       gcCaller.addActionListener(ev -> {
@@ -256,13 +299,39 @@ final class Launcher
         {
           if (process.get().get().isAlive())
           {
-            new PrintStream(process.get().get().getOutputStream()).print("Test#297489237");
+            tell("testmessage[" + Math.random() + "]", process.get().get());
             System.out.println(
                 green_fg("See the process output for details.<br>Printed a test message to the outputstream of process["
                     + process.get().get().pid() + "]"));
           }
         }
+        else
+          System.out.println(red_fg("The process could not be contacted:<br>isAlive: " + Boolean.TRUE.equals(started.e)
+              + "<br>isPresent: " + process.get().isPresent()));
       });
+
+      JPanel clearButtons = new JPanel();
+      clearButtons.setLayout(new GridLayout(1, 3));
+
+      JButton clearInternalConsole = new JButton("<html>Clean<br>I_Output");
+      clearInternalConsole
+          .addActionListener(x -> SwingUtilities.invokeLater(() -> internalConsole
+              .setText("<html><body style=\"font-family:" + varFont.getFamily() + ";font-size:9.5px;color:#ffff;\">")));
+      clearInternalConsole.setOpaque(true);
+      clearInternalConsole.setFont(varFont.deriveFont(11F));
+      clearInternalConsole.setForeground(Color.black);
+      clearInternalConsole.setBackground(hexToRGB(_cyan));
+
+      JButton clearProcessConsole = new JButton("<html>Clean<br>P_Output");
+      clearProcessConsole
+          .addActionListener(x -> SwingUtilities.invokeLater(() -> console.setText("")));
+      clearProcessConsole.setOpaque(true);
+      clearProcessConsole.setFont(varFont.deriveFont(11F));
+      clearProcessConsole.setForeground(Color.black);
+      clearProcessConsole.setBackground(hexToRGB(_pink));
+
+      clearButtons.add(clearInternalConsole);
+      clearButtons.add(clearProcessConsole);
 
       JButton jb = new JButton("Start");
       jb.setOpaque(true);
@@ -275,8 +344,14 @@ final class Launcher
           {
             process.set(Optional.of(exec(START_CMD)));
             stream = Optional.of(new PStream(process.get().get().getInputStream(), Launcher::print2));
-            thread_service.submit(stream.get());
-            print(important("started the process with command:<br>" + START_CMD));
+            ioProcess.get().ifPresent(xrr -> {
+              if (xrr.isAlive())
+                xrr.interrupt();
+            });
+            ioProcess.set(Optional.empty());
+            ioProcess.set(Optional.of(new Thread(stream.get())));
+            ioProcess.get().ifPresent(Thread::start);
+            print(important("started the process with command\nrunning in background"));
           } catch (IOException e)
           {
             e.printStackTrace();
@@ -289,7 +364,13 @@ final class Launcher
             x.destroy();
             process.set(Optional.empty());
             stream = Optional.empty();
-            console.setText("");
+            new Thread(() -> {
+              ioProcess.get().ifPresent(xrr -> {
+                if (xrr.isAlive())
+                  xrr.interrupt();
+              });
+              console.setText("");
+            }).start();
             print(important("Killed the desired process: " + x.pid()));
           });
           jb.setText("Start");
@@ -301,9 +382,11 @@ final class Launcher
       console.setPreferredSize(new Dimension(750 / 2, 850 / 2));
       console.setEditable(false);
       console.setOpaque(true);
+      console.setContentType("text/html");
       console.setForeground(Color.white);
       console.setFont(varFont.deriveFont(10F));
-      console.setBorder(BorderFactory.createTitledBorder("Process Output"));
+      console
+          .setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(2, 6, 0, 0), "Process Output"));
       console.setBackground(hexToRGB("#1d2128"));
 
       internalConsole.setPreferredSize(new Dimension(750 / 2, 850 / 2));
@@ -317,17 +400,26 @@ final class Launcher
 
       JPanel controlPane = new JPanel();
       controlPane.setLayout(new GridLayout(13, 1));
+      controlPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
       controlPane.setPreferredSize(new Dimension(750 / 2, 850));
       controlPane.add(jb);
+      controlPane.add(clearButtons);
       controlPane.add(gcCaller);
       controlPane.add(processInputTest);
+
+      JTabbedPane bottomConsoles = new JTabbedPane(SwingConstants.BOTTOM);
+      bottomConsoles.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+      bottomConsoles.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+      bottomConsoles.setPreferredSize(new Dimension(750 / 2, 850 / 2));
+      bottomConsoles.addTab("I_Output", new JScrollPane(internalConsole));
 
       JSplitPane temp1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
       temp1.setPreferredSize(new Dimension(750 / 2, 850));
       temp1.setDividerLocation(750 / 2);
+      temp1.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
       temp1.setTopComponent(new JScrollPane(console));
-      temp1.setBottomComponent(new JScrollPane(internalConsole));
+      temp1.setBottomComponent(bottomConsoles);
 
       splitPane.setTopComponent(temp1);
       splitPane.setBottomComponent(controlPane);
@@ -337,6 +429,10 @@ final class Launcher
       jf.setLocationRelativeTo(null);
       jf.setVisible(true);
 
+      print(
+          "<p style=\"color:#6969\">jackm bootGL 4.6 version<br>Copyright (C) Jack Meng 2020-2022<br>Copyright (C) Khronos Group<br>Runtime Version: "
+              + System.getProperty("java.version")
+              + "-threadbin->1.2u8<br>&nbsp;[!] this version is experimental (fallback to ES:4.3)<br>&nbsp;[!] default vertex[fp64] was turned off???<br>&nbsp;[!] cmake couldn't detect a proper compile kit (defaulting to clang)");
       print(warn("Daoxe GUI Launcher effective!<br>Took: " + (System.currentTimeMillis() - start) + "ms"));
 
     }
