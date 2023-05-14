@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 import javar.singles.ColorPane;
 import java.util.Enumeration;
@@ -18,6 +20,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
@@ -51,6 +55,8 @@ final class Launcher
   }
   static JEditorPane internalConsole = new JEditorPane("text/html", "<html><body>");
   static ColorPane console = new ColorPane();
+  static long i_uptime = 0x0L, p_uptime = 0x0L, p_count = 0x0L;
+  static wrap< Long > last_p_uptime = new wrap<>(0x0L);
   static final String START_CMD = "node --expose-gc .";
   static Optional< PStream > stream = Optional.empty();
   static final Timer runner = new Timer("daoxe-java-launcher-thread");
@@ -108,7 +114,41 @@ final class Launcher
 
   static String warn(String str)
   {
+
     return "<p style=\"background-color:" + _yellow + ";color:#000\">" + str + "</p>";
+  }
+
+  static String time_format(long val)
+  {
+    StringBuilder buf = new StringBuilder(20);
+    String sgn = "";
+
+    if (val < 0)
+    {
+      sgn = "-";
+      val = Math.abs(val);
+    }
+
+    append(buf, sgn, 0, (val / 60000));
+    val %= 60000;
+    append(buf, ":", 2, (val / 10000));
+    val %= 10000;
+    append(buf, ":", 2, (val));
+    return buf.toString();
+  }
+
+  static void append(StringBuilder tgt, String pfx, int dgt, long val)
+  {
+    tgt.append(pfx);
+    if (dgt > 1)
+    {
+      int pad = (dgt - 1);
+      for (long xa = val; xa > 9 && pad > 0; xa /= 10)
+        pad--;
+      for (int xa = 0; xa < pad; xa++)
+        tgt.append('0');
+    }
+    tgt.append(val);
   }
 
   public static Color hexToRGB(String hex)
@@ -251,32 +291,6 @@ final class Launcher
       jf.setSize(new Dimension(750, 850));
       jf.setIconImage(ImageIO.read(new File("./pkg/temp/pic5.png")));
       jf.setResizable(false);
-      runner.schedule(new TimerTask() {
-        @Override public void run()
-        {
-          jf.setTitle("daoxe-dashboard:" + ((System.currentTimeMillis() - start) / 1000));
-        }
-      }, 1000L, 5000L);
-      runner.schedule(new TimerTask() { // watchdog for if the process itself stops without the button being pressed. by
-                                        // doing so it will be able to handle crashes and set program states to the
-                                        // proper states for further processing without messing up the launcher itself.
-                                        // this is especially useful as well for the hotreload command
-                                        // this command does not modify the process wrapper and instead only watches
-                                        // and alters program states
-                                        //
-                                        // hotreloading allows for the bot to be automatically restarted on code change
-                                        // or on a fixed interval
-        @Override public void run()
-        {
-          process.e.ifPresentOrElse(x -> {
-            if (!x.isAlive())
-            {
-            }
-          }, () -> {
-
-          });
-        }
-      }, 50L, 300L);
 
       JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
       splitPane.setPreferredSize(jf.getSize());
@@ -309,6 +323,13 @@ final class Launcher
           System.out.println(red_fg("The process could not be contacted:<br>isAlive: " + Boolean.TRUE.equals(started.e)
               + "<br>isPresent: " + process.get().isPresent()));
       });
+
+      JPanel infoPane = new JPanel();
+      infoPane.setLayout(new GridLayout(3, 1));
+
+      JLabel internalUptime = new JLabel("<html><strong>I_Uptime: </strong> " + i_uptime);
+      JLabel processUptime = new JLabel("<html><strong>P_Uptime: </strong> " + p_uptime);
+      JLabel processCount = new JLabel("<html><strong>P_Count: </strong> " + p_count);
 
       JPanel clearButtons = new JPanel();
       clearButtons.setLayout(new GridLayout(1, 3));
@@ -356,7 +377,12 @@ final class Launcher
           {
             e.printStackTrace();
           }
-          jb.setText("Stop");
+          p_count++;
+          last_p_uptime.set(System.currentTimeMillis());
+          SwingUtilities.invokeLater(() -> {
+            jb.setText("Stop");
+            processCount.setText("<html><strong>P_Count: </strong> " + p_count);
+          });
         }
         else
         {
@@ -369,14 +395,15 @@ final class Launcher
                 if (xrr.isAlive())
                   xrr.interrupt();
               });
-              console.setText("");
             }).start();
+            last_p_uptime.set(0x0L);
             print(important("Killed the desired process: " + x.pid()));
           });
-          jb.setText("Start");
+          SwingUtilities.invokeLater(() -> jb.setText("Start"));
         }
         started.set(!started.get());
-        jb.setBackground(Boolean.TRUE.equals(started.get()) ? hexToRGB(_red) : hexToRGB(_green));
+        SwingUtilities.invokeLater(
+            () -> jb.setBackground(Boolean.TRUE.equals(started.get()) ? hexToRGB(_red) : hexToRGB(_green)));
       });
 
       console.setPreferredSize(new Dimension(750 / 2, 850 / 2));
@@ -384,7 +411,7 @@ final class Launcher
       console.setOpaque(true);
       console.setContentType("text/html");
       console.setForeground(Color.white);
-      console.setFont(varFont.deriveFont(10F));
+      console.setFont(varFont.deriveFont(10.5F));
       console
           .setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(2, 6, 0, 0), "Process Output"));
       console.setBackground(hexToRGB("#1d2128"));
@@ -398,10 +425,15 @@ final class Launcher
           .setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(2, 6, 0, 0), "Internal Output"));
       internalConsole.setBackground(hexToRGB("#1d2128"));
 
+      infoPane.add(internalUptime);
+      infoPane.add(processUptime);
+      infoPane.add(processCount);
+
       JPanel controlPane = new JPanel();
       controlPane.setLayout(new GridLayout(13, 1));
       controlPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
       controlPane.setPreferredSize(new Dimension(750 / 2, 850));
+      controlPane.add(infoPane);
       controlPane.add(jb);
       controlPane.add(clearButtons);
       controlPane.add(gcCaller);
@@ -423,6 +455,64 @@ final class Launcher
 
       splitPane.setTopComponent(temp1);
       splitPane.setBottomComponent(controlPane);
+
+      runner.schedule(new TimerTask() {
+        // watchdog for if the process itself stops without the button being pressed. by
+        // doing so it will be able to handle crashes and set program states to the
+        // proper states for further processing without messing up the launcher itself.
+        // this is especially useful as well for the hotreload command
+        // this command does not modify the process wrapper and instead only watches
+        // and alters program states
+        //
+        // hotreloading allows for the bot to be automatically restarted on code change
+        // or on a fixed interval
+        @Override public void run()
+        {
+          if (Boolean.TRUE.equals(started.e))
+            process.e.ifPresentOrElse(x -> {
+              if (!x.isAlive())
+              {
+                started.set(false);
+                SwingUtilities.invokeLater(() -> {
+                  jb.setBackground(Boolean.TRUE.equals(started.get()) ? hexToRGB(_red) : hexToRGB(_green));
+                  jb.setText("Start");
+                });
+                print(warn("The watchdog process saw the process exit?"));
+              }
+            }, () -> {
+              started.set(false);
+              SwingUtilities.invokeLater(() -> {
+                jb.setBackground(Boolean.TRUE.equals(started.get()) ? hexToRGB(_red) : hexToRGB(_green));
+                jb.setText("Start");
+              });
+              print(warn("The watchdog process saw the process exit?<br>" + process.hashCode()));
+
+            });
+        }
+      }, 50L, 300L);
+
+      runner.schedule(new TimerTask() {
+        @Override public void run()
+        {
+          i_uptime = ((System.currentTimeMillis() - start) / 1000);
+          SwingUtilities.invokeLater(() -> {
+            jf.setTitle("daoxe-dashboard:" + ((System.currentTimeMillis() - start) / 1000));
+            internalUptime.setText("<html><strong>I_Uptime: </strong> " + time_format(i_uptime));
+          });
+
+          if (Boolean.TRUE.equals(started.e) && process.get().isPresent())
+          {
+            if (process.get().get().isAlive())
+
+              SwingUtilities.invokeLater(() -> processUptime
+                  .setText("<html><strong>P_Uptime: </strong> "
+                      + time_format(((System.currentTimeMillis() - last_p_uptime.get()) / 1000L))));
+          }
+          else
+            SwingUtilities.invokeLater(() -> processUptime.setText("<html><strong>P_Uptime: </strong> " + 0x0L));
+
+        }
+      }, 600L, 100L);
 
       jf.setContentPane(splitPane);
       jf.pack();
