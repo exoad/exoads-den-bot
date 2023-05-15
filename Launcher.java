@@ -9,8 +9,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 
 import javar.singles.ColorPane;
 import java.util.Enumeration;
@@ -20,8 +18,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
@@ -406,6 +402,77 @@ final class Launcher
             () -> jb.setBackground(Boolean.TRUE.equals(started.get()) ? hexToRGB(_red) : hexToRGB(_green)));
       });
 
+      JButton restart = new JButton("HotReload");
+      restart.setEnabled(false);
+      restart.addActionListener(evvvvvv -> {
+
+        print(important("performing a hotreload...<br>watchdog going off"));
+        if (Boolean.TRUE.equals(started.e) && process.get().isPresent())
+        {
+          if (process.get().get().isAlive())
+          {
+            print(important("hotreload: process is a live..."));
+            new Thread(() -> {
+              process.get().ifPresent(x -> {
+                x.destroy();
+                process.set(Optional.empty());
+                stream = Optional.empty();
+                new Thread(() -> {
+                  ioProcess.get().ifPresent(xrr -> {
+                    if (xrr.isAlive())
+                      xrr.interrupt();
+                  });
+                }).start();
+                last_p_uptime.set(0x0L);
+                print(important("Killed the desired process: " + x.pid()));
+              });
+              SwingUtilities.invokeLater(() -> jb.setText("Start"));
+              started.set(!started.get());
+              SwingUtilities.invokeLater(
+                  () -> jb.setBackground(Boolean.TRUE.equals(started.get()) ? hexToRGB(_red) : hexToRGB(_green)));
+              try
+              {
+                Thread.sleep(300L);
+              } catch (InterruptedException e)
+              {
+                e.printStackTrace();
+              }
+              print(important("hotreload: phase1 done"));
+
+              try
+              {
+                process.set(Optional.of(exec(START_CMD)));
+                stream = Optional.of(new PStream(process.get().get().getInputStream(), Launcher::print2));
+                ioProcess.get().ifPresent(xrr -> {
+                  if (xrr.isAlive())
+                    xrr.interrupt();
+                });
+                ioProcess.set(Optional.empty());
+                ioProcess.set(Optional.of(new Thread(stream.get())));
+                ioProcess.get().ifPresent(Thread::start);
+                print(important("started the process with command\nrunning in background"));
+              } catch (IOException e)
+              {
+                e.printStackTrace();
+              }
+              p_count++;
+              last_p_uptime.set(System.currentTimeMillis());
+              SwingUtilities.invokeLater(() -> {
+                jb.setText("Stop");
+                processCount.setText("<html><strong>P_Count: </strong> " + p_count);
+              });
+              started.set(!started.get());
+              SwingUtilities.invokeLater(
+                  () -> jb.setBackground(Boolean.TRUE.equals(started.get()) ? hexToRGB(_red) : hexToRGB(_green)));
+            }).start();
+          }
+        }
+        else
+          System.out.println(red_fg("The process could not be contacted:<br>isAlive: " + Boolean.TRUE.equals(started.e)
+              + "<br>isPresent: " + process.get().isPresent()));
+
+      });
+
       console.setPreferredSize(new Dimension(750 / 2, 850 / 2));
       console.setEditable(false);
       console.setOpaque(true);
@@ -438,6 +505,7 @@ final class Launcher
       controlPane.add(clearButtons);
       controlPane.add(gcCaller);
       controlPane.add(processInputTest);
+      controlPane.add(restart);
 
       JTabbedPane bottomConsoles = new JTabbedPane(SwingConstants.BOTTOM);
       bottomConsoles.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
