@@ -63,16 +63,16 @@ bot.on("messageCreate", (msg) => {
     );
   else if (
     fx.match_strarr_ignorecase(msg.content, [
-      "hello daoxe",
-      "yo daoxe",
-      "hi daoxe",
-      "hoi daoxe",
-      "daoxe :3",
-      "heya daoxe",
-      "daoxe?",
-      "daoxe!",
-      "whos daoxe",
-      "who's daoxe",
+      "hello waoxee",
+      "yo waoxee",
+      "hi waoxee",
+      "hoi waoxee",
+      "waoxee :3",
+      "heya waoxee",
+      "waoxee?",
+      "waoxee!",
+      "whos waoxee",
+      "who's waoxee",
     ])
   ) {
     msg.reply(fx.randomFromArr(config.dynamics.hello));

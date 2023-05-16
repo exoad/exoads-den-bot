@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Script",
+      "request": "launch",
+      "mainClass": "Script",
+      "projectName": "exoads-den-bot_eafbc42e"
+    },
+    {
+      "type": "java",
       "name": "Launcher",
       "request": "launch",
       "mainClass": "Launcher",

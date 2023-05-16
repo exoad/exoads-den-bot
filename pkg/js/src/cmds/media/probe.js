@@ -21,7 +21,10 @@ module.exports = {
   ) => {
     // @ts-ignore
     msg.channel.send(fx_message.search_message()).then(async (m) => {
+      if(!args || !args[0] || args[0] == "help")
+      {
 
+      }
     });
   },
 };

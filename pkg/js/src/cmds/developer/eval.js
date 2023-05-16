@@ -28,7 +28,7 @@ module.exports = {
         .setColor(config.colors.embed_gray)
         .addFields({
           name: ":inbox_tray: Through: ",
-          value: `\`\`\`${code}\`\`\``,
+          value: `\`\`\`js\n${code}\`\`\``,
         })
         .addFields({
           name: ":outbox_tray: Throughout: ",
@@ -41,7 +41,7 @@ module.exports = {
         .addFields({ name: ":inbox_tray: In: ", value: `\`\`\`${code}\`\`\`` })
         .addFields({
           name: ":outbox_tray: Out: ",
-          value: `\`\`\`${clean(err)}\`\`\``,
+          value: `\`\`\`js\n${clean(err)}\`\`\``,
         });
       msg.channel.send({ embeds: [embed] });
     }

@@ -55,7 +55,7 @@ final class Launcher
   static wrap< Long > last_p_uptime = new wrap<>(0x0L);
   static final String START_CMD = "node --expose-gc .";
   static Optional< PStream > stream = Optional.empty();
-  static final Timer runner = new Timer("daoxe-java-launcher-thread");
+  static final Timer runner = new Timer("waoxee-java-launcher-thread");
   static final Stack< String > logs = new Stack<>();
   static final String _green = "#b0db5e", _red = "#d94d45", _pink = "#e673b0", _yellow = "#e6db73", _cyan = "#58d2b4";
   static wrap< Boolean > started = new wrap<>(false);
@@ -282,7 +282,7 @@ final class Launcher
     else
     {
       UIManager.setLookAndFeel(new FlatArcDarkOrangeIJTheme());
-      JFrame jf = new JFrame("daoxe-dashboard");
+      JFrame jf = new JFrame("waoxee-dashboard");
       jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
       jf.setSize(new Dimension(750, 850));
       jf.setIconImage(ImageIO.read(new File("./pkg/temp/pic5.png")));
@@ -564,7 +564,7 @@ final class Launcher
         {
           i_uptime = ((System.currentTimeMillis() - start) / 1000);
           SwingUtilities.invokeLater(() -> {
-            jf.setTitle("daoxe-dashboard:" + ((System.currentTimeMillis() - start) / 1000));
+            jf.setTitle("waoxee-dashboard:" + ((System.currentTimeMillis() - start) / 1000));
             internalUptime.setText("<html><strong>I_Uptime: </strong> " + time_format(i_uptime));
           });
 
@@ -591,7 +591,7 @@ final class Launcher
           "<p style=\"color:#6969\">jackm bootGL 4.6 version<br>Copyright (C) Jack Meng 2020-2022<br>Copyright (C) Khronos Group<br>Runtime Version: "
               + System.getProperty("java.version")
               + "-threadbin->1.2u8<br>&nbsp;[!] this version is experimental (fallback to ES:4.3)<br>&nbsp;[!] default vertex[fp64] was turned off???<br>&nbsp;[!] cmake couldn't detect a proper compile kit (defaulting to clang)");
-      print(warn("Daoxe GUI Launcher effective!<br>Took: " + (System.currentTimeMillis() - start) + "ms"));
+      print(warn("waoxee GUI Launcher effective!<br>Took: " + (System.currentTimeMillis() - start) + "ms"));
 
     }
   }

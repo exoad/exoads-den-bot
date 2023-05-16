@@ -30,70 +30,70 @@ module.exports = {
     var attach = new AttachmentBuilder(
       Buffer.from(
         `
-#__ LICENSE AGREEMENT FOR "DAOXE" __
+#__ LICENSE AGREEMENT FOR "waoxee" __
 
 *IMPORTANT - READ CAREFULLY: This License Agreement ("Agreement") is a legal agreement
-between you (either an individual or a single entity) and the developer of "daoxe"
-("Jack Meng") regarding your use of "daoxe". By using "daoxe", you agree to be bound by
+between you (either an individual or a single entity) and the developer of "waoxee"
+("Jack Meng") regarding your use of "waoxee". By using "waoxee", you agree to be bound by
 the terms of this Agreement.*
 
 # GRANT OF LICENSE
 
-> The "daoxe" is licensed, not sold, to you for use only under the terms of this Agreement.
-  The developer of "daoxe" grants you a non-exclusive, non-transferable, limited license to use
-  "daoxe" solely for legal purposes and in accordance with the terms of this Agreement.
+> The "waoxee" is licensed, not sold, to you for use only under the terms of this Agreement.
+  The developer of "waoxee" grants you a non-exclusive, non-transferable, limited license to use
+  "waoxee" solely for legal purposes and in accordance with the terms of this Agreement.
 
 # COLLECTION OF USER DATA
 
-> The "daoxe" collects certain user data, including but not limited to messages sent in
+> The "waoxee" collects certain user data, including but not limited to messages sent in
   channels, interactions with other bots, and other common actions performed on Discord. By
-  using "daoxe", you agree that "daoxe" may collect and use such data for legal purposes only.
+  using "waoxee", you agree that "waoxee" may collect and use such data for legal purposes only.
 
 # USE OF USER DATA
 
-> The developer of "daoxe" agrees not to sell or leak your data. The "daoxe" will use the
+> The developer of "waoxee" agrees not to sell or leak your data. The "waoxee" will use the
   collected data solely for legal purposes, including but not limited to improving the
-  functionality and performance of "daoxe", and providing technical support to users of
-  "daoxe".
+  functionality and performance of "waoxee", and providing technical support to users of
+  "waoxee".
 
 # LIMITATIONS ON USE
 
-> You may not reverse engineer or exploit "daoxe", except to the extent that such activity
-  is expressly permitted by applicable law. You may not use "daoxe" for commercial purposes.
+> You may not reverse engineer or exploit "waoxee", except to the extent that such activity
+  is expressly permitted by applicable law. You may not use "waoxee" for commercial purposes.
 
 # DISCLAIMER OF WARRANTIES
 
-> The developer of "daoxe" does not warrant that "daoxe" will meet your requirements or
-  that the operation of "daoxe" will be uninterrupted or error-free.
+> The developer of "waoxee" does not warrant that "waoxee" will meet your requirements or
+  that the operation of "waoxee" will be uninterrupted or error-free.
 
 # LIMITATION OF LIABILITY
 
-> In no event shall the developer of "daoxe" be liable for any damages (including, without
+> In no event shall the developer of "waoxee" be liable for any damages (including, without
   limitation, lost profits, business interruption, or lost information) arising out of the
-  use of or inability to use "daoxe", even if the developer of "daoxe" has been advised of
+  use of or inability to use "waoxee", even if the developer of "waoxee" has been advised of
   the possibility of such damages.
 
 # GOVERNING LAW
 
 > This Agreement shall be governed by and construed in accordance with the laws of the
-  jurisdiction in which the developer of "daoxe" is located, without giving effect to any
+  jurisdiction in which the developer of "waoxee" is located, without giving effect to any
   choice of law or conflict of law provision or rule.
 
 # ENTIRE AGREEMENT
 
-> This Agreement constitutes the entire agreement between you and the developer of "daoxe"
+> This Agreement constitutes the entire agreement between you and the developer of "waoxee"
   and supersedes all prior or contemporaneous communications and proposals, whether oral or
-  written, between the parties with respect to "daoxe".
+  written, between the parties with respect to "waoxee".
 
 # MODIFICATIONS TO AGREEMENT
 
-> The developer of "daoxe" may modify this Agreement at any time, and such modifications
-  shall be effective immediately upon posting of the modified Agreement on "daoxe"'s website
-  or other designated location. Your continued use of "daoxe" after such modifications shall
+> The developer of "waoxee" may modify this Agreement at any time, and such modifications
+  shall be effective immediately upon posting of the modified Agreement on "waoxee"'s website
+  or other designated location. Your continued use of "waoxee" after such modifications shall
   be deemed to constitute your acceptance of the modified Agreement.
         `
       )
-    ).setName("daoxe_EULA.md");
+    ).setName("waoxee_EULA.md");
     msg.channel.send({ files: [attach] });
   },
 };

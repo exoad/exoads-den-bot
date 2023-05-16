@@ -21,58 +21,50 @@ module.exports = async (
   if (fx.getNotOks(msg.content).length > 0) {
     msg.delete();
 
-    if (msg.author.id == config["exoad-id"]) {
-      // @ts-ignore
-      illegalsTrackrecord.set(
-        msg.author.id,
-        !illegalsTrackrecord.has(msg.author.id)
-          ? 1
-          : illegalsTrackrecord.get(msg.author.id) + 1
-      );
-      if (
-        illegalsTrackrecord.has(msg.author.id) &&
-        illegalsTrackrecord.get(msg.author.id) >= threshold.illegal_max
-      ) {
+    // @ts-ignore
+    illegalsTrackrecord.set(
+      msg.author.id,
+      !illegalsTrackrecord.has(msg.author.id)
+        ? 1
+        : illegalsTrackrecord.get(msg.author.id) + 1
+    );
+    if (
+      illegalsTrackrecord.has(msg.author.id) &&
+      illegalsTrackrecord.get(msg.author.id) >= threshold.illegal_max
+    ) {
+      try {
         const guild = bot.guilds.cache.get("851999446057222144");
         const role = guild.roles.cache.get(config.roles.muted);
         const member = await guild.members.fetch(msg.author.id);
-        try {
-          member.roles.add(role);
-        } catch (err) {
-          if (err == "Missing Permissions") {
-            botgen.l0g(
-              "Tried to mute a higherup, oops...",
-              null,
-              bot,
-              msg,
-              null
-            );
-            return;
-          } else {
-            console.error(err);
-          }
+        member.roles.add(role);
+      } catch (err) {
+        if (err.code == 50013) {
+          botgen.l0g("Tried to mute a higherup, oops...", null, bot, msg, null);
+          return;
+        } else {
+          console.error(err);
         }
       }
-      botgen.l0g(
-        "Unsafe operation performed by user: " +
-          msg.author.id +
-          "\nwith literal: " +
-          msg.content +
-          "\nStock Left" +
-          illegalsTrackrecord.get(msg.author.id) +
-          "/" +
-          threshold.illegal_max,
-        null,
-        bot,
-        msg,
-        "Red"
-      );
     }
+    botgen.l0g(
+      "Unsafe operation performed by user: " +
+        msg.author.id +
+        "\nwith literal: " +
+        msg.content +
+        "\nStock Left" +
+        illegalsTrackrecord.get(msg.author.id) +
+        "/" +
+        threshold.illegal_max,
+      null,
+      bot,
+      msg,
+      "Red"
+    );
   }
-
-  if (msg.author.bot || msg.channel.type === "dm") {
+  if (config["ignore_BotCommands"] && msg.author.bot) {
     return;
-  } else if (
+  } else if (msg.channel.type === "dm") return;
+  else if (
     config.use_globalCmdTimeout &&
     talkedRecently_userIDS.has(msg.author.id)
   ) {
