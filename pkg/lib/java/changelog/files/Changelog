@@ -1,34 +1,29 @@
 == Changelog for "waoxee" ==
 ** Author: Jack Meng
-** Version: v0.0.2 (Beta)
+** Version: v0.0.3 (Beta)
 ** Description: Generic Update
 ** Changes:
-    [+] Profanity now automatically gets checked
-        and if the user has constantly violated
-        the rule, they will be muted.
-    [+] A system evaluate REPL command has been
-        added for trusted users to use where
-        the user is able to send commands to
-        directly execute on the BASH shell.
-    [+] SimplePoll command allows for a trusted
-        advisory member to automatically create a
-        poll.
-            - This command however requires a
-              tedious JSON format to work
-    [+] Added a logging function for the bot
-        to log actions done by itself or others
-        on the server. Details of what is logged
-        are always kept confidential
-    [-] Removed a NodeJS internal array buffer
-        issue that correlated to it crashing the
-        NodeJS process and then trying to restart.
-    [-] The default NodeJS GC has now been pressured
-        to run more often.
-    [+] Profanity checker now includes a wider
-        variation of checks done for just one slur
-        or word.
-    [+] One word stories compiler that is compiled
-        occasionally to the advisory channel.
-    [+] Added a cat command for fetching a random
-        cat picture
-    [+] EULA agreement file
+    [+] Bot renamed from "daoxe" to
+        waoxee
+    [-] Removed commands belonging
+        to media and moved to
+        informational
+    [+] Bot will now not execute the
+        command if you are using all
+        caps to execute the command
+    [+] Probe command WIP
+    [-] C++ Backend code refactoring
+        for the general bot framework
+        in order to prevent unnecessary
+        overhead
+    [-] Removed code that can depend
+        on the probe command in the
+        future
+    [-] Removed GC defacing code
+        on the Java backend
+    [-] Removed a deprecated JS-C++
+        interpolate method that dealt
+        with curling results from
+        Discord's API
+    [+] C++ interpreter for JS switched
+        Nashorn to V8 with TS support

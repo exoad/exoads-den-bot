@@ -4,7 +4,7 @@ const default_str_str_link_img = "A valid URL to an image (PNG/JPEG).";
 
 class TYPE {
   static IMAGE = TYPE("IMAGE");
-  static NULL = TYPE("NULL");
+  static STATIC = TYPE("STATIC");
 
   constructor(str_value) {
     this.str_value = str_value;
@@ -15,8 +15,7 @@ let MAP_PROBES = [
   {
     blurhash: {
       name: "blurhash",
-      type: "IMAGE",
-      aliases: ["blur_h"],
+      type: TYPE.IMAGE,
       version: 0.1,
       runtime: "Java",
       arguments_n_type: [
@@ -58,14 +57,47 @@ let MAP_PROBES = [
         },
       ],
       descriptors: {
-        main: "BlurHash applies a blur using the classic BlurHash implementation. The original algorithm can be found here: https://github.com/woltapp/blurhash",
+        main: () =>
+          "BlurHash applies a blur using the classic BlurHash implementation. The original algorithm can be found here: https://github.com/woltapp/blurhash",
+      },
+    },
+    help: {
+      name: "help",
+      type: TYPE.STATIC,
+      version: 1.0,
+      runtime: "JS",
+      arguments_n_type: [],
+      descriptors: {
+        main: () =>
+          'This command is highly specific! You first must provide a link to an image (or you can use the dynamic version of this command with "dynprobe"), then the method you want to use (you can provide just the "list" argument to see avaliable options, and then set properties after in the format of:\nproperty1_name=property1_value property2_name=property2_value.]\n\nFinal format:\nprobe [argument/link] [method_name] [properties]\n\nExample: probe https://cdn.website/image.png gaussian_blur iterations=1\n\nAvaliable arguments: {list,docs}',
       },
     },
   },
 ];
 
+/**
+ *
+ * @param {String} str_content
+ */
 function parse(str_content) {
-  // cmd_name,
+  // cmd_name args1=args1_value ...
+  let args = str_content.split(" ");
+  let probe_name = args[0];
+  if (!MAP_PROBES.at(0)[probe_name]) {
+    return {
+      payload_str:
+        "Could not find the desired thing to probe at!\nInput: " +
+        probe_name +
+        "\nFor possible: " +
+        MAP_PROBES.at(0).toString() +
+        "\nRaw: " +
+        str_content,
+      payload: payload_str,
+    };
+  } else {
+    let pot_args = [];
+    for (var i = 1; i < args.length; i++) pot_args.push(args[i]);
+  }
 }
 
 function u_int(content) {
