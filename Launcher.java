@@ -22,6 +22,7 @@ import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
